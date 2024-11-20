@@ -20,7 +20,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { DynamicSidebarMenuProps } from '@/lib/types/dashboard/dashboard.types';
+import type { DynamicSidebarMenuProps } from '@/lib/types/dashboard/dashboard.types';
 import { removeSpaces } from '@/lib/utils';
 
 export function DynamicSidebarMenu({ menuData, menuItems }: DynamicSidebarMenuProps) {

@@ -1,7 +1,7 @@
+import { AppPageContent } from '@/app/(application)/_components/app-page-content';
 import { AppPageSidebar } from '@/app/(application)/_components/app-page-sidebar';
 import { DynamicSidebarMenu } from '@/app/(application)/_components/dynamic-sidebar-menu';
 import { dynamicFinanceMenuData, tempFinanceMenuContent } from '@/lib/tempData';
-import { AppPageContent } from '../../_components/app-page-content';
 
 export default function TodoPage() {
 	/* TODO:

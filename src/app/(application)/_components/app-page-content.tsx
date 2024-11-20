@@ -1,5 +1,5 @@
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { AppPageContentProps } from '@/lib/types/dashboard/dashboard.types';
+import type { AppPageContentProps } from '@/lib/types/dashboard/dashboard.types';
 
 export function AppPageContent({ title, children }: AppPageContentProps) {
 	return (
