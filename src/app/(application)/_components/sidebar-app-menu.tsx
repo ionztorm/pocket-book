@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 
 const menuItems = [
-	{ id: 1, title: 'Todos', path: '#' },
-	{ id: 2, title: 'Finance', path: '#' },
+	{ id: 1, title: 'Todos', path: './todo' },
+	{ id: 2, title: 'Finance', path: './finance' },
 ];
 
 export function SidebarAppMenu() {
