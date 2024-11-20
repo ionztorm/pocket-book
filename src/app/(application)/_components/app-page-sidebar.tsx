@@ -5,7 +5,7 @@ import { AppPageSidebarProps } from '@/lib/types/dashboard/dashboard.types';
 
 export function AppPageSidebar({ children }: AppPageSidebarProps) {
 	return (
-		<Sidebar>
+		<Sidebar variant='sidebar' collapsible='offcanvas'>
 			<SidebarHeader>
 				<SidebarMenu>
 					<SidebarTitle />

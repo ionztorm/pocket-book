@@ -11,6 +11,7 @@ export type DynamicSidebarMenuProps = Readonly<{
 	menuData: DynamicMenuData;
 	menuItems: DynamicMenuItems;
 }>;
+export type AppPageContentProps = Readonly<{ title: string }> & ChildrenProps;
 export type DynamicMenuItem = {
 	id: number;
 	label: string;
