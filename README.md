@@ -43,7 +43,7 @@ Personal organiser - simple, but efficient.
 
 - Mixer
     - ✅ Next JS
-    - ✅ Zed
+    - ✅ Zod
 
 - Backend
     - Database: 
