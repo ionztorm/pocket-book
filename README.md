@@ -47,9 +47,13 @@ Personal organiser - simple, but efficient.
 
 - Backend
     - Database: 
-        - 🤔 Convex 
-        - 🤔 Vercel
-        - 🤔 Neon
+        - ❌ Convex 
+        - ❌ Vercel
+        - ✅ Neon
+    - ORM:
+        - ❌ Prisma
+        - ✅ Drizzle
+        - ❌ Convex
     - Auth: 
         - 🤔 AuthJS
         - 🤔 Clerk
@@ -62,9 +66,9 @@ Personal organiser - simple, but efficient.
 - ✅ NextJS Setup
 - ✅ Folder Structure
 - ✅ Dashboard layout
-- Database Setup
-    - Schemas-
-    - Connectivity test
+- ✅ Database Setup
+    - ✅ Schemas
+    - ✅ Connectivity test
 - Auth
     - Username & Password with email codes
     - Facebook OAuth
