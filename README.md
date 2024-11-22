@@ -55,9 +55,9 @@ Personal organiser - simple, but efficient.
         - ✅ Drizzle
         - ❌ Convex
     - Auth: 
-        - 🤔 AuthJS
-        - 🤔 Clerk
-        - 🤔 Kinde
+        - ✅ AuthJS
+        - ❌ Clerk
+        - ❌ Kinde
     - Host: ✅ Vercel
 
 
