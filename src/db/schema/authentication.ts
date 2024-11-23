@@ -14,7 +14,6 @@ import type { AdapterAccountType } from 'next-auth/adapters';
 export function lower(email: AnyPgColumn): SQL {
 	return sql`lower(${email})`;
 }
-// BUG: role type is not being created.
 const roleEnum = pgEnum('role', ['user', 'admin']);
 
 export const users = pgTable('user', {
