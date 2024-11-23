@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { boolean, integer, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { boolean, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { users } from './authentication';
 
 export const projects = pgTable('projects', {
@@ -25,7 +25,7 @@ export const todos = pgTable('todos', {
 	description: text(),
 	dueDate: timestamp().notNull(),
 	completed: boolean().notNull().default(false),
-	projectId: integer()
+	projectId: text()
 		.notNull()
 		.references(() => projects.id),
 	createdAt: timestamp().notNull().defaultNow(),
