@@ -1,16 +1,12 @@
-import { Dispatch, SetStateAction } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import type { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
 
-export type RegisterFormProps = Readonly<{
-	setState: Dispatch<SetStateAction<'signUp' | 'signIn'>>;
-}>;
-
-export function RegisterForm({ setState }: RegisterFormProps) {
+export function RegisterForm({ setState }: AuthPageComponentProps) {
 	return (
 		<>
 			<CardHeader>
@@ -39,7 +35,7 @@ export function RegisterForm({ setState }: RegisterFormProps) {
 				</div>
 				<div className='mt-4 text-center text-sm'>
 					Already have an account?{' '}
-					<Button asChild variant='link' onClick={() => setState('signIn')}>
+					<Button asChild variant='link' onClick={() => setState('login')}>
 						<Link href='#' className='underline'>
 							Log in
 						</Link>

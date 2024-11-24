@@ -1,16 +1,12 @@
-import { Dispatch, SetStateAction } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import type { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
 
-export type LoginFormProps = Readonly<{
-	setState: Dispatch<SetStateAction<'signUp' | 'signIn'>>;
-}>;
-
-export function LoginForm({ setState }: LoginFormProps) {
+export function LoginForm({ setState }: AuthPageComponentProps) {
 	return (
 		<>
 			<CardHeader>
@@ -26,9 +22,13 @@ export function LoginForm({ setState }: LoginFormProps) {
 					<div className='grid gap-2'>
 						<div className='flex items-center'>
 							<Label htmlFor='password'>Password</Label>
-							<Link href='#' className='ml-auto inline-block text-sm underline'>
+							<Button
+								variant='link'
+								className='ml-auto inline-block text-sm underline'
+								onClick={() => setState('passwordReset')}
+							>
 								Forgot your password?
-							</Link>
+							</Button>
 						</div>
 						<Input id='password' type='password' required />
 					</div>
@@ -42,7 +42,7 @@ export function LoginForm({ setState }: LoginFormProps) {
 				</div>
 				<div className='mt-4 text-center text-sm'>
 					Don&apos;t have an account?{' '}
-					<Button asChild variant='link' onClick={() => setState('signUp')}>
+					<Button asChild variant='link' onClick={() => setState('register')}>
 						<Link href='#' className='underline'>
 							Sign up
 						</Link>
