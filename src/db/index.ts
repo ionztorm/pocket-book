@@ -1,10 +1,10 @@
-import { config } from 'dotenv';
+//import { config } from 'dotenv';
 import { drizzle } from 'drizzle-orm/neon-http';
 import { env } from '@/lib/validations/validators/env.server.validator';
 
-config({
-	path: '.env',
-});
+//config({
+//	path: '.env',
+//});
 
 /*
  * NOTE:
