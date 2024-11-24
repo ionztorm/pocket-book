@@ -4,9 +4,14 @@ import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import type { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
+import { login } from '@/data/auth/auth.actions';
+import type { AuthLoginProviders, AuthPageComponentProps } from '@/lib/types/auth/auth.types';
 
 export function LoginForm({ setState }: AuthPageComponentProps) {
+	const onProviderLogin = (provider: AuthLoginProviders) => {
+		login(provider);
+	};
+
 	return (
 		<>
 			<CardHeader>
@@ -35,7 +40,7 @@ export function LoginForm({ setState }: AuthPageComponentProps) {
 					<Button type='submit' className='w-full'>
 						Login
 					</Button>
-					<Button variant='outline' className='w-full'>
+					<Button variant='outline' className='w-full' onClick={() => onProviderLogin('google')}>
 						<FcGoogle />
 						Login with Google
 					</Button>
