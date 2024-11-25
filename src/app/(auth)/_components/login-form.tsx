@@ -5,11 +5,18 @@ import { CardContent, CardDescription, CardHeader, CardTitle } from '@/component
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { login } from '@/data/auth/auth.actions';
+import { authClient } from '@/lib/auth-client';
 import type { AuthLoginProviders, AuthPageComponentProps } from '@/lib/types/auth/auth.types';
 
 export function LoginForm({ setState }: AuthPageComponentProps) {
-	const onProviderLogin = (provider: AuthLoginProviders) => {
-		login(provider);
+	//const onProviderLogin = async (provider: AuthLoginProviders) => {
+	//	await login(provider);
+	//};
+
+	const login = async (provider: AuthLoginProviders) => {
+		await authClient.signIn.social({
+			provider,
+		});
 	};
 
 	return (
@@ -40,7 +47,7 @@ export function LoginForm({ setState }: AuthPageComponentProps) {
 					<Button type='submit' className='w-full'>
 						Login
 					</Button>
-					<Button variant='outline' className='w-full' onClick={() => onProviderLogin('google')}>
+					<Button variant='outline' className='w-full' onClick={() => login('google')}>
 						<FcGoogle />
 						Login with Google
 					</Button>
