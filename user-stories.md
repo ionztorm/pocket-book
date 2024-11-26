@@ -2,12 +2,12 @@
 
 ## Registration
 - **As a user**, I want to create an account using my email address and a secure password, so that I can access the application.
-- **As a user**, I want to register using my Google account, so that I can sign up quickly without creating a new password.
+- ✅ **As a user**, I want to register using my Google account, so that I can sign up quickly without creating a new password.
 - **As a user**, I want to register using my Facebook account, so that I can easily sign up using my existing social media profile.
 
 ## Login
 - **As a user**, I want to log in using my email address and password, so that I can access my account securely.
-- **As a user**, I want to log in using my Google account, so that I can access my account without needing to remember a separate password.
+- ✅ **As a user**, I want to log in using my Google account, so that I can access my account without needing to remember a separate password.
 - **As a user**, I want to log in using my Facebook account, so that I can easily access my account using my social media profile.
 
 # User Stories: Projects
