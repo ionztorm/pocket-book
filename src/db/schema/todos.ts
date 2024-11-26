@@ -1,15 +1,13 @@
 import { relations } from 'drizzle-orm';
 import { boolean, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
-import { users } from './authentication';
+import { user } from './auth';
 
 export const projects = pgTable('projects', {
-	id: text()
-		.primaryKey()
-		.$defaultFn(() => crypto.randomUUID()),
+	id: text().primaryKey(),
 	name: varchar().notNull(),
 	userId: text()
 		.notNull()
-		.references(() => users.id),
+		.references(() => user.id),
 	createdAt: timestamp().notNull().defaultNow(),
 	updatedAt: timestamp()
 		.notNull()
@@ -18,9 +16,7 @@ export const projects = pgTable('projects', {
 });
 
 export const todos = pgTable('todos', {
-	id: text()
-		.primaryKey()
-		.$defaultFn(() => crypto.randomUUID()),
+	id: text().primaryKey(),
 	title: varchar().notNull(),
 	description: text(),
 	dueDate: timestamp().notNull(),
@@ -38,14 +34,14 @@ export const todos = pgTable('todos', {
 // relations
 
 // A user may have many projects
-export const usersRelations = relations(users, ({ many }) => ({ projects: many(projects) }));
+export const usersRelations = relations(user, ({ many }) => ({ projects: many(projects) }));
 
 // A project may have many todos and belongs to one user
 export const projectRelations = relations(projects, ({ many, one }) => ({
 	todos: many(todos),
-	user: one(users, {
+	user: one(user, {
 		fields: [projects.userId],
-		references: [users.id],
+		references: [user.id],
 	}),
 }));
 

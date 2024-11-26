@@ -1,5 +1,6 @@
 import { FcGoogle } from 'react-icons/fc';
 import Link from 'next/link';
+import { SocialLoginButton } from '@/app/(auth)/_components/social-login-button';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -28,10 +29,7 @@ export function RegisterForm({ setState }: AuthPageComponentProps) {
 					<Button type='submit' className='w-full'>
 						Register
 					</Button>
-					<Button variant='outline' className='w-full'>
-						<FcGoogle />
-						Sign up with Google
-					</Button>
+					<SocialLoginButton icon={FcGoogle} provider='google' type='Register' />
 				</div>
 				<div className='mt-4 text-center text-sm'>
 					Already have an account?{' '}
