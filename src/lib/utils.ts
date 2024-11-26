@@ -6,3 +6,6 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const removeSpaces = (str: string) => str.replace(/\s/g, '');
+
+export const capitalise = (str: string): string =>
+	str.replace(/\b\w/g, (char) => char.toUpperCase());
