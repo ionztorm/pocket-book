@@ -4,10 +4,12 @@ import {
 	ChevronRight,
 	ChevronUp,
 	CreditCard,
+	LayoutDashboard,
 	LogOutIcon,
 	User,
 } from 'lucide-react';
 import { headers } from 'next/headers';
+import Link from 'next/link';
 import { DropdownMenu, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 import { LogoutButton } from '@/app/(auth)/_components/logout-button';
 import { Button } from '@/components/ui/button';
@@ -41,23 +43,28 @@ export async function UserMenu({
 	}
 
 	const ChevronIcon = {
-		bottom: ChevronUp,
+		top: ChevronUp,
 		right: ChevronRight,
 		left: ChevronLeft,
-		top: ChevronDown,
+		bottom: ChevronDown,
 	}[side];
 
 	if (type === 'landing')
 		return (
 			<DropdownMenu>
-				<DropdownMenuTrigger className='h-10 w-full'>
+				<DropdownMenuTrigger asChild className='h-10 w-full'>
 					<Button variant='ghost' className='flex w-full items-center'>
-						<UserAvatar name={session?.user.name} image={session?.user.image} size='lg' />
+						<UserAvatar
+							name={session?.user.name}
+							image={session?.user.image}
+							size='md'
+							className='rounded-full'
+						/>
 						{session?.user.name}
 						{ChevronIcon && <ChevronIcon className='ml-auto' />}
 					</Button>
 				</DropdownMenuTrigger>
-				<UserMenuContent side={side} align={align} />
+				<UserMenuContent side={side} align={align} type='landing' />
 			</DropdownMenu>
 		);
 
@@ -75,16 +82,18 @@ export async function UserMenu({
 	);
 }
 
-export type UserMenuContentProps = Readonly<{
-	side?: 'left' | 'right' | 'top' | 'bottom';
-	align?: 'start' | 'center' | 'end';
-}>;
-
-function UserMenuContent({ side, align }: UserMenuContentProps) {
+function UserMenuContent({ side, align, type }: UserMenuProps) {
 	return (
 		<DropdownMenuContent side={side} align={align} className='w-56'>
 			<DropdownMenuLabel>Account</DropdownMenuLabel>
 			<DropdownMenuSeparator />
+			{type === 'landing' && (
+				<DropdownMenuItem asChild>
+					<Link href='/dashboard/todo'>
+						<LayoutDashboard className='mr-2 size-4' /> Dashboard
+					</Link>
+				</DropdownMenuItem>
+			)}
 			<DropdownMenuItem>
 				<CreditCard className='mr-2 size-4' /> Manage Subscription
 			</DropdownMenuItem>
