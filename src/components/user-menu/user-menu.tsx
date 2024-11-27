@@ -5,13 +5,11 @@ import {
 	ChevronUp,
 	CreditCard,
 	LayoutDashboard,
-	LogOutIcon,
 	User,
 } from 'lucide-react';
 import { headers } from 'next/headers';
 import Link from 'next/link';
 import { DropdownMenu, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
-import { LogoutButton } from '@/app/(auth)/_components/logout-button';
 import { Button } from '@/components/ui/button';
 import {
 	DropdownMenuContent,
@@ -20,8 +18,9 @@ import {
 	DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenuSubButton } from '@/components/ui/sidebar';
-import { UserAvatar } from '@/components/user-avatar';
+import { UserMenuLogout } from '@/components/user-menu/user-menu-logout';
 import { auth } from '@/lib/auth';
+import { UserAvatar } from './user-avatar';
 
 export type UserMenuProps = Readonly<{
 	side?: 'left' | 'right' | 'top' | 'bottom';
@@ -101,11 +100,7 @@ function UserMenuContent({ side, align, type }: UserMenuProps) {
 				<User className='mr-2 size-4' /> Manage Account
 			</DropdownMenuItem>
 			<DropdownMenuSeparator />
-			<DropdownMenuItem>
-				<LogoutButton className='m-0 max-h-max p-0'>
-					<LogOutIcon className='mr-2 size-4' /> Log out
-				</LogoutButton>
-			</DropdownMenuItem>
+			<UserMenuLogout />
 		</DropdownMenuContent>
 	);
 }

@@ -1,7 +1,7 @@
 import { headers } from 'next/headers';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { UserMenu } from '@/components/user-menu';
+import { UserMenu } from '@/components/user-menu/user-menu';
 import { auth } from '@/lib/auth';
 
 export default async function Home() {
