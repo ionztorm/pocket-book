@@ -1,3 +1,3 @@
-import { envSchema } from '@/lib/validations/schema/env.var.schema';
+import { EnvironmentSchema } from '@/lib/validations/schema/env.var.schema';
 
-export const env = envSchema.parse(process.env);
+export const env = EnvironmentSchema.parse(process.env);
