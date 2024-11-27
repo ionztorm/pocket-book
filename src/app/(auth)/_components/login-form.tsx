@@ -1,3 +1,4 @@
+import { AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import Link from 'next/link';
 import { SocialLoginButton } from '@/app/(auth)/_components/social-login-button';
@@ -37,6 +38,7 @@ export function LoginForm({ setState }: AuthPageComponentProps) {
 						Login
 					</Button>
 					<SocialLoginButton icon={FcGoogle} provider='google' type='Login' />
+					<SocialLoginButton icon={AiFillGithub} provider='github' type='Login' />
 				</div>
 				<div className='mt-4 text-center text-sm'>
 					Don&apos;t have an account?{' '}
