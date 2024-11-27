@@ -6,7 +6,7 @@ const menuItems = [
 	{ id: 2, title: 'Finance', path: './finance' },
 ];
 
-export function SidebarAppMenu() {
+export function SidebarAppList() {
 	const menuList = menuItems.map((item) => (
 		<SidebarMenuItem key={item.id}>
 			<SidebarMenuButton asChild>

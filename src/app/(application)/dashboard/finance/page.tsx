@@ -1,6 +1,6 @@
-import { AppPageContent } from '@/app/(application)/_components/app-page-content';
-import { AppPageSidebar } from '@/app/(application)/_components/app-page-sidebar';
-import { DynamicSidebarMenu } from '@/app/(application)/_components/dynamic-sidebar-menu';
+import { ApplicationsContent } from '@/app/(application)/_components/applications-content';
+import { SidebarAppSubMenu } from '@/app/(application)/_components/sidebar-app-sub-menu';
+import { SidebarWrapper } from '@/app/(application)/_components/sidebar-wrapper';
 import { dynamicFinanceMenuData, tempFinanceMenuContent } from '@/lib/tempData';
 
 export default function TodoPage() {
@@ -9,13 +9,13 @@ export default function TodoPage() {
 	 */
 	return (
 		<>
-			<AppPageSidebar>
-				<DynamicSidebarMenu menuData={dynamicFinanceMenuData} menuItems={tempFinanceMenuContent} />
-			</AppPageSidebar>
+			<SidebarWrapper>
+				<SidebarAppSubMenu menuData={dynamicFinanceMenuData} menuItems={tempFinanceMenuContent} />
+			</SidebarWrapper>
 			{/* main todo body content here*/}
-			<AppPageContent title='Finance'>
+			<ApplicationsContent title='Finance'>
 				<p>No financial stuff yet</p>
-			</AppPageContent>
+			</ApplicationsContent>
 		</>
 	);
 }

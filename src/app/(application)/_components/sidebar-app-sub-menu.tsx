@@ -20,10 +20,10 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import type { DynamicSidebarMenuProps } from '@/lib/types/dashboard/dashboard.types';
+import type { SidebarAppSubMenuProps } from '@/lib/types/dashboard/dashboard.types';
 import { removeSpaces } from '@/lib/utils';
 
-export function DynamicSidebarMenu({ menuData, menuItems }: DynamicSidebarMenuProps) {
+export function SidebarAppSubMenu({ menuData, menuItems }: SidebarAppSubMenuProps) {
 	const { label, action, actionDescription } = menuData;
 	const inputId = removeSpaces(action);
 	return (

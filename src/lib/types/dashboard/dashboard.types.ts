@@ -1,19 +1,24 @@
 import { ChildrenProps } from '@/lib/types/global.types';
 
+// Layout
 export type DashboardLayoutProps = ChildrenProps;
-export type AppPageSidebarProps = ChildrenProps;
-export type DynamicMenuData = Readonly<{
+
+// Sidebar
+export type SidebarWrapperProps = ChildrenProps;
+export type SidebarAppSubMenuData = Readonly<{
 	label: string;
 	action: string;
 	actionDescription: string;
 }>;
-export type DynamicSidebarMenuProps = Readonly<{
-	menuData: DynamicMenuData;
-	menuItems: DynamicMenuItems;
-}>;
-export type AppPageContentProps = Readonly<{ title: string }> & ChildrenProps;
-export type DynamicMenuItem = {
+export type SidebarAppSubMenuItem = {
 	id: number;
 	label: string;
 };
-export type DynamicMenuItems = DynamicMenuItem[];
+export type SidebarAppSubMenuItems = SidebarAppSubMenuItem[];
+export type SidebarAppSubMenuProps = Readonly<{
+	menuData: SidebarAppSubMenuData;
+	menuItems: SidebarAppSubMenuItems;
+}>;
+
+// Application main
+export type ApplicationsContentProps = Readonly<{ title: string }> & ChildrenProps;

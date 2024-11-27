@@ -2,7 +2,7 @@ import { Book } from 'lucide-react';
 import Link from 'next/link';
 import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 
-export function SidebarTitle() {
+export function SidebarLogo() {
 	return (
 		<SidebarMenuItem>
 			<SidebarMenuButton size='lg' asChild>

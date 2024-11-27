@@ -1,7 +1,7 @@
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import type { AppPageContentProps } from '@/lib/types/dashboard/dashboard.types';
+import type { ApplicationsContentProps } from '@/lib/types/dashboard/dashboard.types';
 
-export function AppPageContent({ title, children }: AppPageContentProps) {
+export function ApplicationsContent({ title, children }: ApplicationsContentProps) {
 	return (
 		<div className='grid w-full grid-rows-[auto_1fr_auto] p-5'>
 			<header className='flex items-center gap-3'>
