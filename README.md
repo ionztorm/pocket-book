@@ -34,7 +34,7 @@ Coded using:
   - ✅ Connectivity test
 - Authentication
   - Username & Password with email codes
-  - Facebook OAuth
+  - ✅ Github OAuth
   - ✅ Google OAuth
 - Payments
     - Implement Stripe
