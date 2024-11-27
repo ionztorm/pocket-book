@@ -3,9 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { authClient } from '@/lib/auth-client';
-import { ChildrenProps } from '@/lib/types/global.types';
-
-export type LogoutButtonProps = Readonly<{ className?: string }> & ChildrenProps;
+import type { LogoutButtonProps } from '@/lib/types/auth/auth.types';
 
 export function LogoutButton({ children, className }: LogoutButtonProps) {
 	const router = useRouter();

@@ -1,7 +1,7 @@
 import { AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import Link from 'next/link';
-import { SocialLoginButton } from '@/app/(auth)/_components/social-login-button';
+import { LoginButtonSocial } from '@/app/(auth)/_components/login-button-social';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -37,8 +37,8 @@ export function LoginForm({ setState }: AuthPageComponentProps) {
 					<Button type='submit' className='w-full'>
 						Login
 					</Button>
-					<SocialLoginButton icon={FcGoogle} provider='google' type='Login' />
-					<SocialLoginButton icon={AiFillGithub} provider='github' type='Login' />
+					<LoginButtonSocial icon={FcGoogle} provider='google' type='Login' />
+					<LoginButtonSocial icon={AiFillGithub} provider='github' type='Login' />
 				</div>
 				<div className='mt-4 text-center text-sm'>
 					Don&apos;t have an account?{' '}
