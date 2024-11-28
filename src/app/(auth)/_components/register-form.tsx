@@ -16,19 +16,21 @@ export function RegisterForm({ setState }: AuthPageComponentProps) {
 			</CardHeader>
 			<CardContent>
 				<div className='grid gap-4'>
-					<div className='grid gap-2'>
-						<Label htmlFor='email'>Email</Label>
-						<Input id='email' type='email' placeholder='m@example.com' required />
-					</div>
-					<div className='grid gap-2'>
-						<Label htmlFor='password'>Password</Label>
-						<Input id='password' type='password' required />{' '}
-						<Label htmlFor='confirmPassword'>Confirm Password</Label>
-						<Input id='confirmPassword' type='password' required />
-					</div>
-					<Button type='submit' className='w-full'>
-						Register
-					</Button>
+					<form className='grid gap-4'>
+						<div className='grid gap-2'>
+							<Label htmlFor='email'>Email</Label>
+							<Input id='email' type='email' placeholder='m@example.com' required />
+						</div>
+						<div className='grid gap-2'>
+							<Label htmlFor='password'>Password</Label>
+							<Input id='password' type='password' required />{' '}
+							<Label htmlFor='confirmPassword'>Confirm Password</Label>
+							<Input id='confirmPassword' type='password' required />
+						</div>
+						<Button type='submit' className='w-full'>
+							Register
+						</Button>
+					</form>
 					<LoginButtonSocial icon={FcGoogle} provider='google' type='Register' />
 				</div>
 				<div className='mt-4 text-center text-sm'>
