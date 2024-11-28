@@ -5,14 +5,14 @@ import { dynamicFinanceMenuData, tempFinanceMenuContent } from '@/lib/tempData';
 
 export default function TodoPage() {
 	/* TODO:
-	 * fetch todo dynamic menu items from db
+	 * fetch dynamic menu items from db
 	 */
 	return (
 		<>
 			<SidebarWrapper>
 				<SidebarAppSubMenu menuData={dynamicFinanceMenuData} menuItems={tempFinanceMenuContent} />
 			</SidebarWrapper>
-			{/* main todo body content here*/}
+			{/* main body content here*/}
 			<ApplicationsContent title='Finance'>
 				<p>No financial stuff yet</p>
 			</ApplicationsContent>

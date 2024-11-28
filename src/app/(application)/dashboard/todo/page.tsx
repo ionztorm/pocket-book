@@ -5,14 +5,14 @@ import { dynamicTodoMenuData, tempTodoMenuContent } from '@/lib/tempData';
 
 export default function TodoPage() {
 	/* TODO:
-	 * fetch todo dynamic menu items from db
+	 * fetch dynamic menu items from db
 	 */
 	return (
 		<>
 			<SidebarWrapper>
 				<SidebarAppSubMenu menuData={dynamicTodoMenuData} menuItems={tempTodoMenuContent} />
 			</SidebarWrapper>
-			{/* main todo body content here*/}
+			{/* main body content here*/}
 			<ApplicationsContent title='Todos'>
 				<p>No todos yet</p>
 			</ApplicationsContent>
