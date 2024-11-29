@@ -12,9 +12,9 @@ export function AuthScreen() {
 
 	return (
 		<Card className='mx-auto w-full max-w-sm'>
-			{selection === 'login' && <LoginForm setState={setSelection} />}
-			{selection === 'register' && <RegisterForm setState={setSelection} />}
-			{selection === 'passwordReset' && <PasswordResetForm setState={setSelection} />}
+			{selection === 'login' && <LoginForm onSelectAuthOption={setSelection} />}
+			{selection === 'register' && <RegisterForm onSelectAuthOption={setSelection} />}
+			{selection === 'passwordReset' && <PasswordResetForm onSelectAuthOption={setSelection} />}
 		</Card>
 	);
 }
