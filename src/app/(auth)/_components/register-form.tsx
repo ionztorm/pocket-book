@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Loading } from '@/components/ui/loading';
 import type { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
 
 const initialState: UserRegistrationState = {
@@ -40,7 +41,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 							<Input id='confirmPassword' name='confirmPassword' type='password' required />
 						</div>
 						<Button type='submit' className='w-full'>
-							Register
+							{isPending ? <Loading /> : 'Register'}
 						</Button>
 					</form>
 					<LoginButtonSocial icon={FcGoogle} provider='google' type='Register' />
