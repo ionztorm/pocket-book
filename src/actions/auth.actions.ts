@@ -1,5 +1,8 @@
 'use server';
 
+import { ApiError } from 'next/dist/server/api-utils';
+import { redirect } from 'next/navigation';
+import { auth } from '@/lib/auth';
 import { formDataToObject } from '@/lib/utils';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
 
@@ -12,6 +15,7 @@ export type FormErrors = Readonly<{
 	email?: string[];
 	password?: string[];
 	confirmPassword?: string[];
+	database?: string[];
 }>;
 
 export const registerUser = async (
@@ -28,18 +32,26 @@ export const registerUser = async (
 		};
 	}
 
-	//// confirm passwords match
-	//if (parsedFormData.data.password !== parsedFormData.data.confirmPassword) {
-	//	return {
-	//		status: 'error',
-	//		errors: { confirmPassword: ['Passwords do not match'] },
-	//	};
-	//}
-
-	// TODO: signup
-
-	return {
-		status: 'success',
-		errors: null,
+	const signUpData = {
+		name: parsedFormData.data.name,
+		email: parsedFormData.data.email,
+		password: parsedFormData.data.password,
 	};
+
+	try {
+		await auth.api.signUpEmail({
+			body: {
+				...signUpData,
+			},
+		});
+	} catch (error: unknown) {
+		if (error instanceof ApiError) {
+			return {
+				status: 'error',
+				errors: { database: [error.message] },
+			};
+		}
+	}
+
+	redirect('/dashboard');
 };
