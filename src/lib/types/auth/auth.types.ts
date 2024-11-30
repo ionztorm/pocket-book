@@ -5,7 +5,7 @@ import type { ChildrenProps } from '@/lib/types/global.types';
 export type AuthLoginProviders = Readonly<'google' | 'github'>;
 export type AuthOptions = Readonly<'register' | 'login' | 'passwordReset'>;
 export type AuthPageComponentProps = Readonly<{
-	setState: Dispatch<SetStateAction<AuthOptions>>;
+	onSelectAuthOption: Dispatch<SetStateAction<AuthOptions>>;
 }>;
 export type SocialLoginButtonActionTypes = Readonly<'Login' | 'Register'>;
 export type SocialLoginButtonProps = Readonly<{

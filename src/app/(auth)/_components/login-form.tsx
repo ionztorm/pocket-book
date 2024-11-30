@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import type { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
 
-export function LoginForm({ setState }: AuthPageComponentProps) {
+export function LoginForm({ onSelectAuthOption }: AuthPageComponentProps) {
 	return (
 		<>
 			<CardHeader>
@@ -27,7 +27,7 @@ export function LoginForm({ setState }: AuthPageComponentProps) {
 							<Button
 								variant='link'
 								className='ml-auto inline-block text-sm underline'
-								onClick={() => setState('passwordReset')}
+								onClick={() => onSelectAuthOption('passwordReset')}
 							>
 								Forgot your password?
 							</Button>
@@ -42,7 +42,7 @@ export function LoginForm({ setState }: AuthPageComponentProps) {
 				</div>
 				<div className='mt-4 text-center text-sm'>
 					Don&apos;t have an account?{' '}
-					<Button asChild variant='link' onClick={() => setState('register')}>
+					<Button asChild variant='link' onClick={() => onSelectAuthOption('register')}>
 						<Link href='#' className='underline'>
 							Sign up
 						</Link>

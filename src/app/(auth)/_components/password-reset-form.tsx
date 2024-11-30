@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import type { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
 
-export function PasswordResetForm({ setState }: AuthPageComponentProps) {
+export function PasswordResetForm({ onSelectAuthOption }: AuthPageComponentProps) {
 	return (
 		<>
 			<CardHeader>
@@ -20,7 +20,7 @@ export function PasswordResetForm({ setState }: AuthPageComponentProps) {
 					<Button type='submit' className='w-full'>
 						Submit
 					</Button>
-					<Button variant='link' className='w-full' onClick={() => setState('login')}>
+					<Button variant='link' className='w-full' onClick={() => onSelectAuthOption('login')}>
 						Wait, I remembered it, log me in!
 					</Button>
 				</div>
