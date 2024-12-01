@@ -1,22 +1,49 @@
-import { useActionState } from 'react';
-import { FcGoogle } from 'react-icons/fc';
+import { useForm } from 'react-hook-form';
 import Link from 'next/link';
-import { UserRegistrationState, registerUser } from '@/actions/auth.actions';
-import { LoginButtonSocial } from '@/app/(auth)/_components/login-button-social';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Loading } from '@/components/ui/loading';
-import type { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
-
-const initialState: UserRegistrationState = {
-	errors: null,
-	status: null,
-};
+// import { authClient } from '@/lib/auth-client';
+import { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
+import type { Signup } from '@/lib/types/validation.types';
+import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
+import { SocialLogins } from './social-logins';
 
 export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
-	const [error, action, isPending] = useActionState(registerUser, initialState);
+	const form = useForm<Signup>({
+		resolver: zodResolver(SignupSchema),
+		defaultValues: {
+			name: '',
+			email: '',
+			password: '',
+			confirmPassword: '',
+		},
+	});
+	const onSubmit = (values: Signup) => {
+		console.log(values);
+		// await authClient.signUp.email(
+		// 	{
+		// 		email: 'test',
+		// 		password: 'test',
+		// 		name: 'test',
+		// 	},
+		// 	{
+		// 		onRequest: (ctx) => {},
+		// 		onSuccess: (ctx) => {},
+		// 		onError: (ctx) => {},
+		// 	},
+		// );
+	};
+
 	return (
 		<>
 			<CardHeader>
@@ -24,28 +51,65 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 				<CardDescription>Enter your email below to create an account</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<div className='grid gap-4'>
-					<form action={action} className='grid gap-4'>
-						<div className='grid gap-2'>
-							<Label htmlFor='name'>Name</Label>
-							<Input id='name' name='name' type='text' placeholder='Joe Bloggs' required />
-						</div>
-						<div className='grid gap-2'>
-							<Label htmlFor='email'>Email</Label>
-							<Input id='email' name='email' type='email' placeholder='m@example.com' required />
-						</div>
-						<div className='grid gap-2'>
-							<Label htmlFor='password'>Password</Label>
-							<Input id='password' name='password' type='password' required />{' '}
-							<Label htmlFor='confirmPassword'>Confirm Password</Label>
-							<Input id='confirmPassword' name='confirmPassword' type='password' required />
-						</div>
-						<Button type='submit' className='w-full'>
-							{isPending ? <Loading /> : 'Register'}
-						</Button>
+				<Form {...form}>
+					<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-3'>
+						<FormField
+							control={form.control}
+							name='name'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Name</FormLabel>
+									<FormControl>
+										<Input placeholder='Joe Bloggs' {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='email'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Email</FormLabel>
+									<FormControl>
+										<Input placeholder='e@mai.l' type='email' {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='password'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Email</FormLabel>
+									<FormControl>
+										<Input {...field} type='password' />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='confirmPassword'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Confirm Password</FormLabel>
+									<FormControl>
+										<Input {...field} type='password' />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<Button type='submit'>Submit</Button>
 					</form>
-					<LoginButtonSocial icon={FcGoogle} provider='google' type='Register' />
-				</div>
+				</Form>
+
+				<SocialLogins type='Register' />
 				<div className='mt-4 text-center text-sm'>
 					Already have an account?{' '}
 					<Button asChild variant='link' onClick={() => onSelectAuthOption('login')}>

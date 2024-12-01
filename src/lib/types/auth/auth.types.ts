@@ -14,3 +14,4 @@ export type SocialLoginButtonProps = Readonly<{
 	type: SocialLoginButtonActionTypes;
 }>;
 export type LogoutButtonProps = Readonly<{ className?: string }> & ChildrenProps;
+export type SocialLoginProps = Readonly<{ type: SocialLoginButtonActionTypes }>;
