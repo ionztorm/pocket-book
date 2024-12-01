@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { FormErrors, registerUserAction } from '@/actions/auth.actions';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -16,7 +17,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Loading } from '@/components/ui/loading';
-import { authClient } from '@/lib/auth-client';
 import { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
 import type { Signup } from '@/lib/types/validation.types';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
@@ -24,8 +24,8 @@ import { SocialLogins } from './social-logins';
 
 export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 	const [isPending, setIsPending] = useState(false);
+	const [errors, setErrors] = useState<FormErrors | null>(null);
 	const router = useRouter();
-	const formRef = useRef<HTMLFormElement>(null);
 	const form = useForm<Signup>({
 		resolver: zodResolver(SignupSchema),
 		defaultValues: {
@@ -37,23 +37,28 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 	});
 
 	const onSubmit = async (values: Signup) => {
-		const signUpValues = { name: values.name, email: values.email, password: values.password };
+		setIsPending(true);
+		const formData = new FormData();
+		Object.entries(values).forEach(([key, value]) => {
+			formData.append(key, value);
+		});
 
-		await authClient.signUp.email(
-			{ ...signUpValues },
-			{
-				onRequest: () => setIsPending(true),
-				onSuccess: () => {
-					setIsPending(false);
-					toast.success('Account created successfully');
-					router.push('/dashboard/todo');
-				},
-				onError: (ctx) => {
-					setIsPending(false);
-					toast.error(ctx.error.message);
-				},
-			},
-		);
+		const result = await registerUserAction(formData);
+		if (!result.errors) {
+			toast.success('Account created successfully');
+			setIsPending(false);
+			router.push('/dashboard/todo');
+			return;
+		}
+
+		if (result.errors?.signup) {
+			setIsPending(false);
+			toast.error(result.errors.signup[0]);
+			return;
+		}
+		setErrors(result.errors);
+		setIsPending(false);
+		toast.error('An error occurred');
 	};
 
 	return (
@@ -64,7 +69,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 			</CardHeader>
 			<CardContent>
 				<Form {...form}>
-					<form ref={formRef} onSubmit={form.handleSubmit(onSubmit)} className='grid gap-3'>
+					<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-3'>
 						<FormField
 							control={form.control}
 							name='name'
@@ -74,7 +79,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 									<FormControl>
 										<Input placeholder='Joe Bloggs' {...field} />
 									</FormControl>
-									<FormMessage />
+									<FormMessage>{errors?.name ? errors.name : ''}</FormMessage>
 								</FormItem>
 							)}
 						/>
@@ -87,7 +92,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 									<FormControl>
 										<Input placeholder='e@mai.l' type='email' {...field} />
 									</FormControl>
-									<FormMessage />
+									<FormMessage>{errors?.email ? errors.email : ''}</FormMessage>
 								</FormItem>
 							)}
 						/>
@@ -96,11 +101,11 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 							name='password'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Email</FormLabel>
+									<FormLabel>Password</FormLabel>
 									<FormControl>
 										<Input {...field} type='password' />
 									</FormControl>
-									<FormMessage />
+									<FormMessage>{errors?.password ? errors.password : ''}</FormMessage>
 								</FormItem>
 							)}
 						/>
@@ -113,7 +118,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 									<FormControl>
 										<Input {...field} type='password' />
 									</FormControl>
-									<FormMessage />
+									<FormMessage>{errors?.confirmPassword ? errors.confirmPassword : ''}</FormMessage>
 								</FormItem>
 							)}
 						/>

@@ -1,7 +1,6 @@
 'use server';
 
-import { ApiError } from 'next/dist/server/api-utils';
-import { redirect } from 'next/navigation';
+import { APIError } from 'better-auth/api';
 import { auth } from '@/lib/auth';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
 
@@ -16,16 +15,10 @@ export type FormErrors = Readonly<{
 	signup?: string[];
 }>;
 
-export const registerUserAction = async (
-	_: UserRegistrationState,
-	formData: FormData,
-): Promise<UserRegistrationState> => {
-	console.log('formData', formData);
+export const registerUserAction = async (formData: FormData): Promise<UserRegistrationState> => {
 	const registrationFormData = Object.fromEntries(formData);
-	console.log('registrationFormData', registrationFormData);
 
 	const parsedFormData = SignupSchema.safeParse(registrationFormData);
-	console.log('parsedFormData', parsedFormData);
 	if (!parsedFormData.success) {
 		return {
 			errors: parsedFormData.error.flatten().fieldErrors,
@@ -45,12 +38,12 @@ export const registerUserAction = async (
 			},
 		});
 	} catch (error: unknown) {
-		if (error instanceof ApiError) {
+		if (error instanceof APIError) {
 			return {
 				errors: { signup: [error.message] },
 			};
 		}
 	}
 
-	redirect('/dashboard/todo');
+	return { errors: null };
 };
