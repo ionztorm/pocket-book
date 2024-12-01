@@ -45,7 +45,8 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 
 		const result = await registerUserAction(formData);
 		if (!result.errors) {
-			toast.success('Account created successfully');
+			const name = result.name;
+			toast.success(name ? `Welcome ${name}` : 'Account created successfully');
 			setIsPending(false);
 			router.push('/dashboard/todo');
 			return;

@@ -6,6 +6,7 @@ import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema'
 
 export type UserRegistrationState = {
 	errors: FormErrors | null;
+	name: string | null;
 };
 export type FormErrors = Readonly<{
 	name?: string[];
@@ -22,6 +23,7 @@ export const registerUserAction = async (formData: FormData): Promise<UserRegist
 	if (!parsedFormData.success) {
 		return {
 			errors: parsedFormData.error.flatten().fieldErrors,
+			name: null,
 		};
 	}
 
@@ -31,19 +33,22 @@ export const registerUserAction = async (formData: FormData): Promise<UserRegist
 		password: parsedFormData.data.password,
 	};
 
+	let name;
 	try {
-		await auth.api.signUpEmail({
+		const data = await auth.api.signUpEmail({
 			body: {
 				...signUpData,
 			},
 		});
+		name = data?.user?.name;
 	} catch (error: unknown) {
 		if (error instanceof APIError) {
 			return {
 				errors: { signup: [error.message] },
+				name: null,
 			};
 		}
 	}
 
-	return { errors: null };
+	return { errors: null, name: name ?? null };
 };
