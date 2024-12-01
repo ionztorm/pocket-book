@@ -4,6 +4,7 @@ import { nextCookies } from 'better-auth/next-js';
 import { db } from '@/db';
 import * as schema from '@/db/schema/auth';
 import { env } from '@/lib/validations/validators/env.server.validator';
+import { validateInputs } from './plugins/server.validation';
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
@@ -28,5 +29,5 @@ export const auth = betterAuth({
 			clientSecret: env.AUTH_GITHUB_SECRET,
 		},
 	},
-	plugins: [nextCookies()],
+	plugins: [nextCookies(), validateInputs],
 });
