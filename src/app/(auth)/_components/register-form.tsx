@@ -1,5 +1,8 @@
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,13 +15,17 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-// import { authClient } from '@/lib/auth-client';
+import { Loading } from '@/components/ui/loading';
+import { authClient } from '@/lib/auth-client';
 import { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
 import type { Signup } from '@/lib/types/validation.types';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
 import { SocialLogins } from './social-logins';
 
 export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
+	const [isPending, setIsPending] = useState(false);
+	const router = useRouter();
+	const formRef = useRef<HTMLFormElement>(null);
 	const form = useForm<Signup>({
 		resolver: zodResolver(SignupSchema),
 		defaultValues: {
@@ -28,20 +35,25 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 			confirmPassword: '',
 		},
 	});
-	const onSubmit = (values: Signup) => {
-		console.log(values);
-		// await authClient.signUp.email(
-		// 	{
-		// 		email: 'test',
-		// 		password: 'test',
-		// 		name: 'test',
-		// 	},
-		// 	{
-		// 		onRequest: (ctx) => {},
-		// 		onSuccess: (ctx) => {},
-		// 		onError: (ctx) => {},
-		// 	},
-		// );
+
+	const onSubmit = async (values: Signup) => {
+		const signUpValues = { name: values.name, email: values.email, password: values.password };
+
+		await authClient.signUp.email(
+			{ ...signUpValues },
+			{
+				onRequest: () => setIsPending(true),
+				onSuccess: () => {
+					setIsPending(false);
+					toast.success('Account created successfully');
+					router.push('/dashboard/todo');
+				},
+				onError: (ctx) => {
+					setIsPending(false);
+					toast.error(ctx.error.message);
+				},
+			},
+		);
 	};
 
 	return (
@@ -52,7 +64,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 			</CardHeader>
 			<CardContent>
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-3'>
+					<form ref={formRef} onSubmit={form.handleSubmit(onSubmit)} className='grid gap-3'>
 						<FormField
 							control={form.control}
 							name='name'
@@ -105,7 +117,9 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 								</FormItem>
 							)}
 						/>
-						<Button type='submit'>Submit</Button>
+						<Button type='submit' disabled={isPending}>
+							{isPending ? <Loading /> : 'Submit'}
+						</Button>
 					</form>
 				</Form>
 
