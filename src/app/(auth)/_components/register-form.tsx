@@ -23,7 +23,6 @@ import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema'
 import { SocialLogins } from './social-logins';
 
 export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
-	const [isPending, setIsPending] = useState(false);
 	const [errors, setErrors] = useState<FormErrors | null>(null);
 	const router = useRouter();
 	const form = useForm<Signup>({
@@ -35,31 +34,24 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 			confirmPassword: '',
 		},
 	});
+	const isPending = form.formState.isSubmitting;
 
 	const onSubmit = async (values: Signup) => {
-		setIsPending(true);
 		const formData = new FormData();
-		Object.entries(values).forEach(([key, value]) => {
+		for (const [key, value] of Object.entries(values)) {
 			formData.append(key, value);
-		});
+		}
 
 		const result = await registerUserAction(formData);
-		if (!result.errors) {
-			const name = result.name;
-			toast.success(name ? `Welcome ${name}` : 'Account created successfully');
-			setIsPending(false);
-			router.push('/dashboard/todo');
+
+		if (result.errors) {
+			toast.error(result.errors.signup?.[0] || 'An error occurred');
+			setErrors(result.errors);
 			return;
 		}
 
-		if (result.errors?.signup) {
-			setIsPending(false);
-			toast.error(result.errors.signup[0]);
-			return;
-		}
-		setErrors(result.errors);
-		setIsPending(false);
-		toast.error('An error occurred');
+		toast.success(`Welcome ${result.name}`);
+		router.push('/dashboard/todo');
 	};
 
 	return (
@@ -78,7 +70,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 								<FormItem>
 									<FormLabel>Name</FormLabel>
 									<FormControl>
-										<Input placeholder='Joe Bloggs' {...field} />
+										<Input disabled={isPending} placeholder='Joe Bloggs' {...field} />
 									</FormControl>
 									<FormMessage>{errors?.name ? errors.name : ''}</FormMessage>
 								</FormItem>
@@ -91,7 +83,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 								<FormItem>
 									<FormLabel>Email</FormLabel>
 									<FormControl>
-										<Input placeholder='e@mai.l' type='email' {...field} />
+										<Input disabled={isPending} placeholder='e@mai.l' type='email' {...field} />
 									</FormControl>
 									<FormMessage>{errors?.email ? errors.email : ''}</FormMessage>
 								</FormItem>
@@ -104,7 +96,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 								<FormItem>
 									<FormLabel>Password</FormLabel>
 									<FormControl>
-										<Input {...field} type='password' />
+										<Input disabled={isPending} {...field} type='password' />
 									</FormControl>
 									<FormMessage>{errors?.password ? errors.password : ''}</FormMessage>
 								</FormItem>
@@ -117,7 +109,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 								<FormItem>
 									<FormLabel>Confirm Password</FormLabel>
 									<FormControl>
-										<Input {...field} type='password' />
+										<Input disabled={isPending} {...field} type='password' />
 									</FormControl>
 									<FormMessage>{errors?.confirmPassword ? errors.confirmPassword : ''}</FormMessage>
 								</FormItem>

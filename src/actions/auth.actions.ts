@@ -4,10 +4,9 @@ import { APIError } from 'better-auth/api';
 import { auth } from '@/lib/auth';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
 
-export type UserRegistrationState = {
-	errors: FormErrors | null;
-	name: string | null;
-};
+export type UserRegistrationState =
+	| { errors: FormErrors; name: null }
+	| { errors: null; name: string };
 export type FormErrors = Readonly<{
 	name?: string[];
 	email?: string[];
