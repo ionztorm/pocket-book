@@ -37,12 +37,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 	const isPending = form.formState.isSubmitting;
 
 	const onSubmit = async (values: Signup) => {
-		const formData = new FormData();
-		for (const [key, value] of Object.entries(values)) {
-			formData.append(key, value);
-		}
-
-		const result = await registerUserAction(formData);
+		const result = await registerUserAction(values);
 
 		if (result.errors) {
 			toast.error(result.errors.signup?.[0] || 'An error occurred');
