@@ -15,3 +15,29 @@ export type SocialLoginButtonProps = Readonly<{
 }>;
 export type LogoutButtonProps = Readonly<{ className?: string }> & ChildrenProps;
 export type SocialLoginProps = Readonly<{ type: SocialLoginButtonActionTypes }>;
+
+// auth forms
+
+export type SignupFields = Readonly<'name' | 'email' | 'password' | 'confirmPassword'>;
+
+export type LoginFields = Readonly<'email' | 'password'>;
+
+export type FormErrors<TFields extends string> = Readonly<{
+	[K in TFields]?: ReadonlyArray<string>;
+}> &
+	Readonly<{
+		saving?: ReadonlyArray<string>;
+	}>;
+
+export type FormField<T extends string> = Readonly<{
+	name: T;
+	placeholder: string;
+}>;
+
+export type SignupFormErrors = Readonly<FormErrors<SignupFields>>;
+
+export type LoginFormErrors = Readonly<FormErrors<LoginFields>>;
+
+export type SignupFormFields = Readonly<FormField<SignupFields>>;
+
+export type LoginFormFields = Readonly<FormField<LoginFields>>;
