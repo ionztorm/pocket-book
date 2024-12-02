@@ -52,7 +52,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 		const result = await registerUserAction(values);
 
 		if (result.errors) {
-			toast.error(result.errors.signup?.[0] || 'An error occurred');
+			toast.error(result.errors.saving?.[0] || 'An error occurred');
 			setErrors(result.errors);
 			return;
 		}
@@ -67,7 +67,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 				<CardTitle className='text-2xl'>Register</CardTitle>
 				<CardDescription>Enter your email below to create an account</CardDescription>
 			</CardHeader>
-			<CardContent>
+			<CardContent className='grid gap-4'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-3'>
 						{signupFields.map(({ name, placeholder }) => (
@@ -92,7 +92,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 									</FormItem>
 								)}
 							/>
-						))}{' '}
+						))}
 						<Button type='submit' disabled={isPending}>
 							{isPending ? <Loading /> : 'Submit'}
 						</Button>

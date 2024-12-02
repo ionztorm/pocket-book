@@ -2,19 +2,13 @@
 
 import { APIError } from 'better-auth/api';
 import { auth } from '@/lib/auth';
+import { SignupFormErrors } from '@/lib/types/auth/auth.types';
 import { Signup } from '@/lib/types/validation.types';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
 
 export type UserRegistrationState =
-	| { errors: FormErrors; name: null }
+	| { errors: SignupFormErrors; name: null }
 	| { errors: null; name: string };
-export type FormErrors = Readonly<{
-	name?: string[];
-	email?: string[];
-	password?: string[];
-	confirmPassword?: string[];
-	signup?: string[];
-}>;
 
 export const registerUserAction = async (values: Signup): Promise<UserRegistrationState> => {
 	const parsedFormData = SignupSchema.safeParse(values);
@@ -41,7 +35,7 @@ export const registerUserAction = async (values: Signup): Promise<UserRegistrati
 
 		if (!data?.user?.name) {
 			return {
-				errors: { signup: ['Unexpected response: user name is missing'] },
+				errors: { saving: ['Unexpected response: user name is missing'] },
 				name: null,
 			};
 		}
@@ -54,14 +48,14 @@ export const registerUserAction = async (values: Signup): Promise<UserRegistrati
 		// Catch API errors and return a matching error message
 		if (error instanceof APIError) {
 			return {
-				errors: { signup: [error.message] },
+				errors: { saving: [error.message] },
 				name: null,
 			};
 		}
 
 		// Handle unexpected errors in a consistent way
 		return {
-			errors: { signup: ['An unexpected error occurred'] },
+			errors: { saving: ['An unexpected error occurred'] },
 			name: null,
 		};
 	}
