@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormErrors, registerUserAction } from '@/actions/auth.actions';
+import { registerUserAction } from '@/actions/auth.actions';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -17,13 +17,25 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Loading } from '@/components/ui/loading';
-import { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
+import {
+	AuthPageComponentProps,
+	SignupFormErrors,
+	SignupFormFields,
+} from '@/lib/types/auth/auth.types';
 import type { Signup } from '@/lib/types/validation.types';
+import { capitalise } from '@/lib/utils';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
 import { SocialLogins } from './social-logins';
 
+const signupFields: SignupFormFields[] = [
+	{ name: 'name', placeholder: 'Joe Bloggs' },
+	{ name: 'email', placeholder: 'e@mai.l' },
+	{ name: 'password', placeholder: '••••••••' },
+	{ name: 'confirmPassword', placeholder: '••••••••' },
+];
+
 export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
-	const [errors, setErrors] = useState<FormErrors | null>(null);
+	const [errors, setErrors] = useState<SignupFormErrors | null>(null);
 	const router = useRouter();
 	const form = useForm<Signup>({
 		resolver: zodResolver(SignupSchema),
@@ -58,58 +70,29 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 			<CardContent>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-3'>
-						<FormField
-							control={form.control}
-							name='name'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Name</FormLabel>
-									<FormControl>
-										<Input disabled={isPending} placeholder='Joe Bloggs' {...field} />
-									</FormControl>
-									<FormMessage>{errors?.name ? errors.name : ''}</FormMessage>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='email'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Email</FormLabel>
-									<FormControl>
-										<Input disabled={isPending} placeholder='e@mai.l' type='email' {...field} />
-									</FormControl>
-									<FormMessage>{errors?.email ? errors.email : ''}</FormMessage>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='password'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Password</FormLabel>
-									<FormControl>
-										<Input disabled={isPending} {...field} type='password' />
-									</FormControl>
-									<FormMessage>{errors?.password ? errors.password : ''}</FormMessage>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='confirmPassword'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Confirm Password</FormLabel>
-									<FormControl>
-										<Input disabled={isPending} {...field} type='password' />
-									</FormControl>
-									<FormMessage>{errors?.confirmPassword ? errors.confirmPassword : ''}</FormMessage>
-								</FormItem>
-							)}
-						/>
+						{signupFields.map(({ name, placeholder }) => (
+							<FormField
+								key={name}
+								control={form.control}
+								name={name}
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>{capitalise(name)}</FormLabel>
+										<FormControl>
+											<Input
+												disabled={isPending}
+												placeholder={placeholder}
+												{...field}
+												type={
+													name === 'email' ? 'email' : name === 'password' ? 'password' : 'text'
+												}
+											/>
+										</FormControl>
+										<FormMessage>{errors?.[name] ? errors[name] : ''}</FormMessage>
+									</FormItem>
+								)}
+							/>
+						))}{' '}
 						<Button type='submit' disabled={isPending}>
 							{isPending ? <Loading /> : 'Submit'}
 						</Button>
