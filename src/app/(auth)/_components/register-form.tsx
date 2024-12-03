@@ -17,7 +17,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Loading } from '@/components/ui/loading';
 import { authClient } from '@/lib/auth-client';
-import { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
+import type { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
 import type { Signup } from '@/lib/types/validation.types';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
 import { SocialLogins } from './social-logins';
