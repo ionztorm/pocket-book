@@ -35,7 +35,7 @@ Coded using:
 - Authentication
   - Username & Password
     - ✅ Registration
-    - Login
+    - ✅ Login
     - Email Verification
     - Password Reset
   - ✅ Github OAuth
