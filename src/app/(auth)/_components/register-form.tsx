@@ -55,7 +55,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 				<CardTitle className='text-2xl'>Register</CardTitle>
 				<CardDescription>Enter your email below to create an account</CardDescription>
 			</CardHeader>
-			<CardContent>
+			<CardContent className='grid gap-4'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-3'>
 						<FormField
