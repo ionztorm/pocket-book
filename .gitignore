@@ -44,3 +44,5 @@ next-env.d.ts
 # bun
 
 bun.lockb
+
+/backups
