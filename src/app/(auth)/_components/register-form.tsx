@@ -7,23 +7,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { registerUserAction } from '@/actions/auth.actions';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Form } from '@/components/ui/form';
+import { FormFieldRenderer } from '@/components/ui/form-field-renderer';
 import { Loading } from '@/components/ui/loading';
 import {
 	AuthPageComponentProps,
+	SignupFields,
 	SignupFormErrors,
 	SignupFormFields,
 } from '@/lib/types/auth/auth.types';
 import type { Signup } from '@/lib/types/validation.types';
-import { capitalise } from '@/lib/utils';
+import { getInputType } from '@/lib/utils';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
 import { SocialLogins } from './social-logins';
 
@@ -70,29 +64,16 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 			<CardContent className='grid gap-4'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-3'>
-						{signupFields.map(({ name, placeholder }) => (
-							<FormField
-								key={name}
+						{signupFields.map((field) => (
+							<FormFieldRenderer<SignupFields>
+								key={field.name}
 								control={form.control}
-								name={name}
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>{capitalise(name)}</FormLabel>
-										<FormControl>
-											<Input
-												disabled={isPending}
-												placeholder={placeholder}
-												{...field}
-												type={
-													name === 'email' ? 'email' : name === 'password' ? 'password' : 'text'
-												}
-											/>
-										</FormControl>
-										<FormMessage>{errors?.[name] ? errors[name] : ''}</FormMessage>
-									</FormItem>
-								)}
+								fieldDetails={field}
+								errors={errors}
+								getInputType={getInputType}
+								isPending={isPending}
 							/>
-						))}
+						))}{' '}
 						<Button type='submit' disabled={isPending}>
 							{isPending ? <Loading /> : 'Submit'}
 						</Button>

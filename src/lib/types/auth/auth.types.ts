@@ -1,4 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react';
+import { Path } from 'react-hook-form';
 import type { IconType } from 'react-icons/lib';
 import type { ChildrenProps } from '@/lib/types/global.types';
 import { Login, Signup } from '../validation.types';
@@ -30,7 +31,7 @@ export type FormErrors<TFields extends string> = Readonly<{
 	}>;
 
 export type FormField<T extends string> = Readonly<{
-	name: T;
+	name: Path<{ [key in T]: string }>;
 	placeholder: string;
 }>;
 

@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from 'clsx';
+import { Path } from 'react-hook-form';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -10,10 +11,14 @@ export const removeSpaces = (str: string) => str.replace(/\s/g, '');
 export const capitalise = (str: string): string =>
 	str.replace(/\b\w/g, (char) => char.toUpperCase());
 
-export const formDataToObject = (formData: FormData) => {
-	const obj: Record<string, unknown> = {};
-	formData.forEach((value, key) => {
-		obj[key] = value;
-	});
-	return obj;
+export const getInputType = <T extends string>(
+	name: Path<{ [key in T]: string }>,
+): 'text' | 'email' | 'password' => {
+	if (name.toLowerCase().includes('password')) {
+		return 'password';
+	}
+	if (name === 'email') {
+		return 'email';
+	}
+	return 'text';
 };
