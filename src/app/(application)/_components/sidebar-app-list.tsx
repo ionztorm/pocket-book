@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import Link from 'next/link';
 
 const menuItems = [
 	{ id: 1, title: 'Todos', path: './todo' },

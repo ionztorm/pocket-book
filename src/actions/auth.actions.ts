@@ -4,6 +4,8 @@ import { APIError } from 'better-auth/api';
 import { auth } from '@/lib/auth';
 import { Signup } from '@/lib/types/validation.types';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
+import { ApiError } from 'next/dist/server/api-utils';
+import { redirect } from 'next/navigation';
 
 export type UserRegistrationState =
 	| { errors: FormErrors; name: null }

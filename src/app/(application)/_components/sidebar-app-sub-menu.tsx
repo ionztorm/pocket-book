@@ -1,4 +1,3 @@
-import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
 	Dialog,
@@ -22,6 +21,7 @@ import {
 } from '@/components/ui/sidebar';
 import type { SidebarAppSubMenuProps } from '@/lib/types/dashboard/dashboard.types';
 import { removeSpaces } from '@/lib/utils';
+import { Plus } from 'lucide-react';
 
 export function SidebarAppSubMenu({ menuData, menuItems }: SidebarAppSubMenuProps) {
 	const { label, action, actionDescription } = menuData;

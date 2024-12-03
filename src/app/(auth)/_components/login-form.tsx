@@ -1,12 +1,12 @@
-import { AiFillGithub } from 'react-icons/ai';
-import { FcGoogle } from 'react-icons/fc';
-import Link from 'next/link';
 import { LoginButtonSocial } from '@/app/(auth)/_components/login-button-social';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import type { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
+import Link from 'next/link';
+import { AiFillGithub } from 'react-icons/ai';
+import { FcGoogle } from 'react-icons/fc';
 
 export function LoginForm({ onSelectAuthOption }: AuthPageComponentProps) {
 	return (
