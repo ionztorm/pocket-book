@@ -1,10 +1,10 @@
 'use server';
 
-import { ApiError } from 'next/dist/server/api-utils';
-import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { formDataToObject } from '@/lib/utils';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
+import { ApiError } from 'next/dist/server/api-utils';
+import { redirect } from 'next/navigation';
 
 export type UserRegistrationState = {
 	errors: FormErrors | null;

@@ -1,9 +1,9 @@
 'use client';
 
-import { LogOutIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { authClient } from '@/lib/auth-client';
+import { LogOutIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export function UserMenuLogout() {
 	const router = useRouter();

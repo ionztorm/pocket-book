@@ -1,9 +1,9 @@
-import { z } from 'zod';
 import {
 	getEmailSchema,
 	getNameSchema,
 	getPasswordSchema,
 } from '@/lib/validations/schema/auth.email.parts.schema';
+import { z } from 'zod';
 
 export const SignupSchema = z
 	.object({

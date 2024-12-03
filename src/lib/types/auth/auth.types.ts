@@ -1,6 +1,6 @@
+import type { ChildrenProps } from '@/lib/types/global.types';
 import type { Dispatch, SetStateAction } from 'react';
 import type { IconType } from 'react-icons/lib';
-import type { ChildrenProps } from '@/lib/types/global.types';
 
 export type AuthLoginProviders = Readonly<'google' | 'github'>;
 export type AuthOptions = Readonly<'register' | 'login' | 'passwordReset'>;

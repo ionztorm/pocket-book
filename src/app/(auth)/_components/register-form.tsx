@@ -1,6 +1,3 @@
-import { useActionState } from 'react';
-import { FcGoogle } from 'react-icons/fc';
-import Link from 'next/link';
 import { UserRegistrationState, registerUser } from '@/actions/auth.actions';
 import { LoginButtonSocial } from '@/app/(auth)/_components/login-button-social';
 import { Button } from '@/components/ui/button';
@@ -9,6 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Loading } from '@/components/ui/loading';
 import type { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
+import Link from 'next/link';
+import { useActionState } from 'react';
+import { FcGoogle } from 'react-icons/fc';
 
 const initialState: UserRegistrationState = {
 	errors: null,
