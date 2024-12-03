@@ -1,6 +1,6 @@
+import type { SocialLoginProps } from '@/lib/types/auth/auth.types';
 import { AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
-import { SocialLoginProps } from '@/lib/types/auth/auth.types';
 import { LoginButtonSocial } from './login-button-social';
 
 export function SocialLogins({ type }: SocialLoginProps) {

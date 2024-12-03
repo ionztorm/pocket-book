@@ -1,10 +1,4 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { FormErrors, registerUserAction } from '@/actions/auth.actions';
+import { type FormErrors, registerUserAction } from '@/actions/auth.actions';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -17,9 +11,15 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Loading } from '@/components/ui/loading';
-import { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
+import type { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
 import type { Signup } from '@/lib/types/validation.types';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { SocialLogins } from './social-logins';
 
 export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {

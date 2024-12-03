@@ -1,9 +1,9 @@
 'use server';
 
-import { APIError } from 'better-auth/api';
 import { auth } from '@/lib/auth';
-import { Signup } from '@/lib/types/validation.types';
+import type { Signup } from '@/lib/types/validation.types';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
+import { APIError } from 'better-auth/api';
 
 export type UserRegistrationState =
 	| { errors: FormErrors; name: null }
