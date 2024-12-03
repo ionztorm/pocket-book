@@ -1,4 +1,4 @@
-import { type FormErrors, registerUserAction } from '@/actions/auth.actions';
+import { registerUserAction } from '@/actions/auth.actions';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Loading } from '@/components/ui/loading';
-import type { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
+import type { AuthPageComponentProps, SignupFormErrors } from '@/lib/types/auth/auth.types';
 import type { Signup } from '@/lib/types/validation.types';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,11 +19,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { SocialLogins } from './social-logins';
 
+import { toast } from 'sonner';
 export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
-	const [errors, setErrors] = useState<FormErrors | null>(null);
+	const [errors, setErrors] = useState<SignupFormErrors | null>(null);
 	const router = useRouter();
 	const form = useForm<Signup>({
 		resolver: zodResolver(SignupSchema),
@@ -40,12 +39,12 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 		const result = await registerUserAction(values);
 
 		if (result.errors) {
-			toast.error(result.errors.signup?.[0] || 'An error occurred');
+			toast.error(result.errors.saving?.[0] || 'An error occurred');
 			setErrors(result.errors);
 			return;
 		}
 
-		toast.success(`Welcome ${result.name}`);
+		toast.success(`Welcome ${values.name}`);
 		router.push('/dashboard/todo');
 	};
 
@@ -116,7 +115,6 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 					</form>
 				</Form>
 
-				<SocialLogins type='Register' />
 				<div className='mt-4 text-center text-sm'>
 					Already have an account?{' '}
 					<Button asChild variant='link' onClick={() => onSelectAuthOption('login')}>
