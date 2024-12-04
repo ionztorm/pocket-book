@@ -1,14 +1,9 @@
-import { betterAuth } from 'better-auth';
-import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { nextCookies } from 'better-auth/next-js';
 import { db } from '@/db';
 import * as schema from '@/db/schema/auth';
 import { env } from '@/lib/validations/validators/env.server.validator';
-import {
-	inputValidator,
-	userInputValidation,
-} from './plugins/DataValidator/UserInputValidation.plugin';
-import { SignupSchema } from './validations/schema/auth.email.signup.schema';
+import { betterAuth } from 'better-auth';
+import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { nextCookies } from 'better-auth/next-js';
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {

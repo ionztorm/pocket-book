@@ -1,6 +1,4 @@
-import { useForm } from 'react-hook-form';
-import Link from 'next/link';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { registerUserAction } from '@/actions/auth.actions';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -12,13 +10,20 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-// import { authClient } from '@/lib/auth-client';
-import { AuthPageComponentProps } from '@/lib/types/auth/auth.types';
+import { Loading } from '@/components/ui/loading';
+import type { AuthPageComponentProps, SignupFormErrors } from '@/lib/types/auth/auth.types';
 import type { Signup } from '@/lib/types/validation.types';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
-import { SocialLogins } from './social-logins';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
+import { toast } from 'sonner';
 export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
+	const [errors, setErrors] = useState<SignupFormErrors | null>(null);
+	const router = useRouter();
 	const form = useForm<Signup>({
 		resolver: zodResolver(SignupSchema),
 		defaultValues: {
@@ -28,20 +33,19 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 			confirmPassword: '',
 		},
 	});
-	const onSubmit = (values: Signup) => {
-		console.log(values);
-		// await authClient.signUp.email(
-		// 	{
-		// 		email: 'test',
-		// 		password: 'test',
-		// 		name: 'test',
-		// 	},
-		// 	{
-		// 		onRequest: (ctx) => {},
-		// 		onSuccess: (ctx) => {},
-		// 		onError: (ctx) => {},
-		// 	},
-		// );
+	const isPending = form.formState.isSubmitting;
+
+	const onSubmit = async (values: Signup) => {
+		const result = await registerUserAction(values);
+
+		if (result.errors) {
+			toast.error(result.errors.saving?.[0] || 'An error occurred');
+			setErrors(result.errors);
+			return;
+		}
+
+		toast.success(`Welcome ${values.name}`);
+		router.push('/dashboard/todo');
 	};
 
 	return (
@@ -50,7 +54,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 				<CardTitle className='text-2xl'>Register</CardTitle>
 				<CardDescription>Enter your email below to create an account</CardDescription>
 			</CardHeader>
-			<CardContent>
+			<CardContent className='grid gap-4'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-3'>
 						<FormField
@@ -60,9 +64,9 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 								<FormItem>
 									<FormLabel>Name</FormLabel>
 									<FormControl>
-										<Input placeholder='Joe Bloggs' {...field} />
+										<Input disabled={isPending} placeholder='Joe Bloggs' {...field} />
 									</FormControl>
-									<FormMessage />
+									<FormMessage>{errors?.name ? errors.name : ''}</FormMessage>
 								</FormItem>
 							)}
 						/>
@@ -73,9 +77,9 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 								<FormItem>
 									<FormLabel>Email</FormLabel>
 									<FormControl>
-										<Input placeholder='e@mai.l' type='email' {...field} />
+										<Input disabled={isPending} placeholder='e@mai.l' type='email' {...field} />
 									</FormControl>
-									<FormMessage />
+									<FormMessage>{errors?.email ? errors.email : ''}</FormMessage>
 								</FormItem>
 							)}
 						/>
@@ -84,11 +88,11 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 							name='password'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Email</FormLabel>
+									<FormLabel>Password</FormLabel>
 									<FormControl>
-										<Input {...field} type='password' />
+										<Input disabled={isPending} {...field} type='password' />
 									</FormControl>
-									<FormMessage />
+									<FormMessage>{errors?.password ? errors.password : ''}</FormMessage>
 								</FormItem>
 							)}
 						/>
@@ -99,17 +103,18 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 								<FormItem>
 									<FormLabel>Confirm Password</FormLabel>
 									<FormControl>
-										<Input {...field} type='password' />
+										<Input disabled={isPending} {...field} type='password' />
 									</FormControl>
-									<FormMessage />
+									<FormMessage>{errors?.confirmPassword ? errors.confirmPassword : ''}</FormMessage>
 								</FormItem>
 							)}
 						/>
-						<Button type='submit'>Submit</Button>
+						<Button type='submit' disabled={isPending}>
+							{isPending ? <Loading /> : 'Submit'}
+						</Button>
 					</form>
 				</Form>
 
-				<SocialLogins type='Register' />
 				<div className='mt-4 text-center text-sm'>
 					Already have an account?{' '}
 					<Button asChild variant='link' onClick={() => onSelectAuthOption('login')}>

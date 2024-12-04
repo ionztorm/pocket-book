@@ -1,4 +1,4 @@
-import { ChildrenProps } from '@/lib/types/global.types';
+import type { ChildrenProps } from '@/lib/types/global.types';
 
 // Layout
 export type DashboardLayoutProps = ChildrenProps;
