@@ -1,33 +1,20 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { registerUserAction } from '@/actions/auth.actions';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form } from '@/components/ui/form';
 import { FormFieldRenderer } from '@/components/ui/form-field-renderer';
 import { Loading } from '@/components/ui/loading';
-import {
-	AuthPageComponentProps,
-	SignupFields,
-	SignupFormErrors,
-	SignupFormFields,
-} from '@/lib/types/auth/auth.types';
+import type { AuthPageComponentProps, SignupFormErrors } from '@/lib/types/auth/auth.types';
 import type { Signup } from '@/lib/types/validation.types';
 import { getInputType } from '@/lib/utils';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
-import { SocialLogins } from './social-logins';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-const signupFields: SignupFormFields[] = [
-	{ name: 'name', placeholder: 'Joe Bloggs' },
-	{ name: 'email', placeholder: 'e@mai.l' },
-	{ name: 'password', placeholder: '••••••••' },
-	{ name: 'confirmPassword', placeholder: '••••••••' },
-];
-
+import { toast } from 'sonner';
 export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 	const [errors, setErrors] = useState<SignupFormErrors | null>(null);
 	const router = useRouter();
@@ -51,7 +38,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 			return;
 		}
 
-		toast.success(`Welcome ${result.name}`);
+		toast.success(`Welcome ${values.name}`);
 		router.push('/dashboard/todo');
 	};
 
@@ -80,7 +67,6 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 					</form>
 				</Form>
 
-				<SocialLogins type='Register' />
 				<div className='mt-4 text-center text-sm'>
 					Already have an account?{' '}
 					<Button asChild variant='link' onClick={() => onSelectAuthOption('login')}>

@@ -1,6 +1,6 @@
+import { betterFetch } from '@better-fetch/fetch';
 import type { Session } from 'better-auth/types';
 import { type NextRequest, NextResponse } from 'next/server';
-import { betterFetch } from '@better-fetch/fetch';
 
 export default async function middlware(request: NextRequest) {
 	const { data: session } = await betterFetch<Session>('/api/auth/get-session', {

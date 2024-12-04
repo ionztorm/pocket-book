@@ -1,3 +1,14 @@
+import { Button } from '@/components/ui/button';
+import {
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
+import { SidebarMenuSubButton } from '@/components/ui/sidebar';
+import { UserMenuLogout } from '@/components/user-menu/user-menu-logout';
+import { auth } from '@/lib/auth';
+import { DropdownMenu, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 import {
 	ChevronDown,
 	ChevronLeft,
@@ -9,17 +20,6 @@ import {
 } from 'lucide-react';
 import { headers } from 'next/headers';
 import Link from 'next/link';
-import { DropdownMenu, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
-import { Button } from '@/components/ui/button';
-import {
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-} from '@/components/ui/dropdown-menu';
-import { SidebarMenuSubButton } from '@/components/ui/sidebar';
-import { UserMenuLogout } from '@/components/user-menu/user-menu-logout';
-import { auth } from '@/lib/auth';
 import { UserAvatar } from './user-avatar';
 
 export type UserMenuProps = Readonly<{

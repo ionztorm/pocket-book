@@ -1,7 +1,7 @@
-import { z } from 'zod';
-import { LoginSchema } from '@/lib/validations/schema/auth.email.login.schema';
-import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
-import { EnvironmentSchema } from '@/lib/validations/schema/env.var.schema';
+import type { LoginSchema } from '@/lib/validations/schema/auth.email.login.schema';
+import type { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
+import type { EnvironmentSchema } from '@/lib/validations/schema/env.var.schema';
+import type { z } from 'zod';
 
 export type Environment = z.infer<typeof EnvironmentSchema>;
 export type Login = z.infer<typeof LoginSchema>;
