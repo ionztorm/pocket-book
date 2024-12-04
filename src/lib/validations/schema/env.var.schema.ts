@@ -8,6 +8,7 @@ export const EnvironmentSchema = z.object({
 	AUTH_GOOGLE_SECRET: z.string(),
 	AUTH_GITHUB_ID: z.string(),
 	AUTH_GITHUB_SECRET: z.string(),
+	RESEND_KEY: z.string(),
 });
 
 declare global {
