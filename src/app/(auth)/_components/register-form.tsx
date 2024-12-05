@@ -29,8 +29,6 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 		defaultValues: {
 			name: '',
 			email: '',
-			password: '',
-			confirmPassword: '',
 		},
 	});
 	const isPending = form.formState.isSubmitting;
