@@ -1,4 +1,3 @@
-import { loginUserAction } from '@/actions/auth.actions';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -10,40 +9,49 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import {
+	InputOTP,
+	InputOTPGroup,
+	InputOTPSeparator,
+	InputOTPSlot,
+} from '@/components/ui/input-otp';
 import type { AuthPageComponentProps, LoginFormErrors } from '@/lib/types/auth/auth.types';
 import type { Login } from '@/lib/types/validation.types';
 import { LoginSchema } from '@/lib/validations/schema/auth.email.login.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { SocialLogins } from './social-logins';
 
 export function LoginForm({ onSelectAuthOption }: AuthPageComponentProps) {
-	const [errors, setErrors] = useState<LoginFormErrors | null>(null);
-	const router = useRouter();
+	const [errors, _setErrors] = useState<LoginFormErrors | null>(null);
+	const _router = useRouter();
 
 	const form = useForm<Login>({
 		resolver: zodResolver(LoginSchema),
 		defaultValues: {
 			email: '',
+			otp: '',
 		},
 	});
 
 	const onSubmit = async (values: Login) => {
+		// 	console.log(values);
+		// 	const result = await loginUserAction(values);
+
+		// 	if (result?.errors) {
+		// 		toast.error(result.errors.saving?.[0] || 'An error occurred');
+		// 		setErrors(result.errors);
+		// 		return;
+		// 	}
+
+		// 	toast.success('Welcome back');
+		// 	router.push('/dashboard/todo');
+		// };
 		console.log(values);
-		const result = await loginUserAction(values);
-
-		if (result?.errors) {
-			toast.error(result.errors.saving?.[0] || 'An error occurred');
-			setErrors(result.errors);
-			return;
-		}
-
-		toast.success('Welcome back');
-		router.push('/dashboard/todo');
 	};
 
 	return (
@@ -69,6 +77,45 @@ export function LoginForm({ onSelectAuthOption }: AuthPageComponentProps) {
 										/>
 									</FormControl>
 									<FormMessage>{errors?.email ? errors.email : ''}</FormMessage>
+								</FormItem>
+							)}
+						/>
+
+						{/*
+            TODO: put inside dialog
+            */}
+						<FormField
+							control={form.control}
+							name='otp'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>OTP</FormLabel>
+									<FormControl>
+										<InputOTP
+											maxLength={6}
+											pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+											value={field.value}
+											onChange={field.onChange}
+											onBlur={field.onBlur}
+											className='justify-center'
+										>
+											<InputOTPGroup>
+												<InputOTPSlot index={0} />
+												<InputOTPSlot index={1} />
+											</InputOTPGroup>
+											<InputOTPSeparator />
+											<InputOTPGroup>
+												<InputOTPSlot index={2} />
+												<InputOTPSlot index={3} />
+											</InputOTPGroup>
+											<InputOTPSeparator />
+											<InputOTPGroup>
+												<InputOTPSlot index={4} />
+												<InputOTPSlot index={5} />
+											</InputOTPGroup>
+										</InputOTP>
+									</FormControl>
+									<FormMessage>{errors?.otp ? errors.otp : ''}</FormMessage>
 								</FormItem>
 							)}
 						/>
