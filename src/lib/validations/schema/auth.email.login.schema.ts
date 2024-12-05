@@ -1,6 +1,7 @@
-import { getEmailSchema } from '@/lib/validations/schema/auth.email.parts.schema';
+import { getEmailSchema, getOTPSchema } from '@/lib/validations/schema/auth.email.parts.schema';
 import { z } from 'zod';
 
 export const LoginSchema = z.object({
 	email: getEmailSchema(),
+	otp: getOTPSchema(),
 });
