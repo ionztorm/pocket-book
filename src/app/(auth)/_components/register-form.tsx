@@ -83,32 +83,6 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 								</FormItem>
 							)}
 						/>
-						<FormField
-							control={form.control}
-							name='password'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Password</FormLabel>
-									<FormControl>
-										<Input disabled={isPending} {...field} type='password' />
-									</FormControl>
-									<FormMessage>{errors?.password ? errors.password : ''}</FormMessage>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='confirmPassword'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Confirm Password</FormLabel>
-									<FormControl>
-										<Input disabled={isPending} {...field} type='password' />
-									</FormControl>
-									<FormMessage>{errors?.confirmPassword ? errors.confirmPassword : ''}</FormMessage>
-								</FormItem>
-							)}
-						/>
 						<Button type='submit' disabled={isPending}>
 							{isPending ? <Loading /> : 'Submit'}
 						</Button>

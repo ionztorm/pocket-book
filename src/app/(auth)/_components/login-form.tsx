@@ -1,3 +1,4 @@
+import { loginUserAction } from '@/actions/auth.actions';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -17,9 +18,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { SocialLogins } from './social-logins';
-import { loginUserAction } from '@/actions/auth.actions';
 import { toast } from 'sonner';
+import { SocialLogins } from './social-logins';
 
 export function LoginForm({ onSelectAuthOption }: AuthPageComponentProps) {
 	const [errors, setErrors] = useState<LoginFormErrors | null>(null);
@@ -29,7 +29,6 @@ export function LoginForm({ onSelectAuthOption }: AuthPageComponentProps) {
 		resolver: zodResolver(LoginSchema),
 		defaultValues: {
 			email: '',
-			password: '',
 		},
 	});
 
@@ -74,24 +73,6 @@ export function LoginForm({ onSelectAuthOption }: AuthPageComponentProps) {
 							)}
 						/>
 
-						<FormField
-							control={form.control}
-							name='password'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Password</FormLabel>
-									<FormControl>
-										<Input
-											type='password'
-											disabled={form.formState.isSubmitting}
-											placeholder='**********'
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage>{errors?.password ? errors.password : ''}</FormMessage>
-								</FormItem>
-							)}
-						/>
 						<Button type='submit' className='w-full'>
 							Login
 						</Button>
