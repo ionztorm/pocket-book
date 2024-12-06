@@ -7,13 +7,17 @@ export default async function middlware(request: NextRequest) {
 		baseURL: request.nextUrl.origin,
 		headers: {
 			//get the cookie from the request
-			cookie: request.headers.get('cookie') || '',
+			cookie: request.headers.get('cookie') ?? '',
 		},
 	});
 
-	// accessing /dashboard/* while not logged in -> auth
-	if (!session && request.nextUrl.pathname.startsWith('/dashboard')) {
-		return NextResponse.redirect(new URL('/auth', request.url));
+	// accessing /dashboard/*  or /auth while not logged in -> auth
+	if (
+		!session &&
+		(request.nextUrl.pathname.startsWith('/dashboard') ||
+			request.nextUrl.pathname.endsWith('/auth'))
+	) {
+		return NextResponse.redirect(new URL('/auth/login', request.url));
 	}
 
 	// accessing /auth or /dashboard while logged in -> todos
