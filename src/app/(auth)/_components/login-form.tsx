@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -85,7 +87,7 @@ export function LoginForm() {
 				<div className='mt-4 text-center text-sm'>
 					Don&apos;t have an account?{' '}
 					<Button asChild variant='link'>
-						<Link href='#' className='underline'>
+						<Link href='/auth/register' className='underline'>
 							Sign up
 						</Link>
 					</Button>
