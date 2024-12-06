@@ -1,3 +1,5 @@
+'use client';
+
 import { registerUserAction } from '@/actions/auth.actions';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -21,6 +23,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { toast } from 'sonner';
+import { SocialLogins } from './social-logins';
 export function RegisterForm() {
 	const [errors, setErrors] = useState<SignupFormErrors | null>(null);
 	const router = useRouter();
@@ -87,10 +90,12 @@ export function RegisterForm() {
 					</form>
 				</Form>
 
+				<SocialLogins type='Register' />
+
 				<div className='mt-4 text-center text-sm'>
 					Already have an account?{' '}
 					<Button asChild variant='link'>
-						<Link href='auth/login' className='underline'>
+						<Link href='/auth/login' className='underline'>
 							Log in
 						</Link>
 					</Button>
