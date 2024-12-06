@@ -1,12 +1,11 @@
 import type { ChildrenProps } from '@/lib/types/global.types';
 import type { Dispatch, SetStateAction } from 'react';
 import type { IconType } from 'react-icons/lib';
-import type { Login, Signup } from '../validation.types';
+import type { Email, Login, OTP, Signup } from '../validation.types';
 
 export type AuthLoginProviders = Readonly<'google' | 'github'>;
-export type AuthOptions = Readonly<'register' | 'login' | 'passwordReset'>;
 export type AuthPageComponentProps = Readonly<{
-	onSelectAuthOption: Dispatch<SetStateAction<AuthOptions>>;
+	onChangeAuthState: Dispatch<SetStateAction<AuthFormStates | null>>;
 }>;
 export type SocialLoginButtonActionTypes = Readonly<'Login' | 'Register'>;
 export type SocialLoginButtonProps = Readonly<{
@@ -14,6 +13,31 @@ export type SocialLoginButtonProps = Readonly<{
 	icon: IconType;
 	type: SocialLoginButtonActionTypes;
 }>;
+
+export type TAuthenticationContext = {
+	state: AuthContextReducerState;
+	dispatch: Dispatch<AuthContextReducerAction>;
+	authFormState: AuthFormStates | null;
+	setAuthFormState: Dispatch<SetStateAction<AuthFormStates | null>>;
+};
+
+export type TAuthenticationContextProviderProps = {
+	children: React.ReactNode;
+};
+
+export type AuthContextReducerState = {
+	name: string | null;
+	email: Email['email'] | null;
+	otp: OTP['otp'] | null;
+};
+
+export type AuthContextReducerAction =
+	| { type: 'email'; email: string }
+	| { type: 'name'; name: string }
+	| { type: 'otp'; otp: string };
+
+export type AuthFormStates = 'register' | 'login' | 'otp';
+
 export type LogoutButtonProps = Readonly<{ className?: string }> & ChildrenProps;
 export type SocialLoginProps = Readonly<{ type: SocialLoginButtonActionTypes }>;
 
