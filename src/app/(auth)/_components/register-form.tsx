@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Loading } from '@/components/ui/loading';
-import type { AuthPageComponentProps, SignupFormErrors } from '@/lib/types/auth/auth.types';
+import type { SignupFormErrors } from '@/lib/types/auth/auth.types';
 import type { Signup } from '@/lib/types/validation.types';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,7 +21,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { toast } from 'sonner';
-export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
+export function RegisterForm() {
 	const [errors, setErrors] = useState<SignupFormErrors | null>(null);
 	const router = useRouter();
 	const form = useForm<Signup>({
@@ -37,7 +37,7 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 		const result = await registerUserAction(values);
 
 		if (result.errors) {
-			toast.error(result.errors.saving?.[0] || 'An error occurred');
+			toast.error(result.errors.saving?.[0] ?? 'An error occurred');
 			setErrors(result.errors);
 			return;
 		}
@@ -89,8 +89,8 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 
 				<div className='mt-4 text-center text-sm'>
 					Already have an account?{' '}
-					<Button asChild variant='link' onClick={() => onSelectAuthOption('login')}>
-						<Link href='#' className='underline'>
+					<Button asChild variant='link'>
+						<Link href='auth/login' className='underline'>
 							Log in
 						</Link>
 					</Button>

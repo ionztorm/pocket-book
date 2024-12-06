@@ -9,24 +9,18 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-	InputOTP,
-	InputOTPGroup,
-	InputOTPSeparator,
-	InputOTPSlot,
-} from '@/components/ui/input-otp';
-import type { AuthPageComponentProps, LoginFormErrors } from '@/lib/types/auth/auth.types';
-import type { Login } from '@/lib/types/validation.types';
+import {} from '@/components/ui/input-otp';
+import type { LoginFormErrors } from '@/lib/types/auth/auth.types';
+import type { Email, Login } from '@/lib/types/validation.types';
 import { LoginSchema } from '@/lib/validations/schema/auth.email.login.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { SocialLogins } from './social-logins';
 
-export function LoginForm({ onSelectAuthOption }: AuthPageComponentProps) {
+export function LoginForm() {
 	const [errors, _setErrors] = useState<LoginFormErrors | null>(null);
 	const _router = useRouter();
 
@@ -38,7 +32,7 @@ export function LoginForm({ onSelectAuthOption }: AuthPageComponentProps) {
 		},
 	});
 
-	const onSubmit = async (values: Login) => {
+	const onSubmit = async (values: Email) => {
 		// 	console.log(values);
 		// 	const result = await loginUserAction(values);
 
@@ -81,45 +75,6 @@ export function LoginForm({ onSelectAuthOption }: AuthPageComponentProps) {
 							)}
 						/>
 
-						{/*
-            TODO: put inside dialog
-            */}
-						<FormField
-							control={form.control}
-							name='otp'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>OTP</FormLabel>
-									<FormControl>
-										<InputOTP
-											maxLength={6}
-											pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
-											value={field.value}
-											onChange={field.onChange}
-											onBlur={field.onBlur}
-											className='justify-center'
-										>
-											<InputOTPGroup>
-												<InputOTPSlot index={0} />
-												<InputOTPSlot index={1} />
-											</InputOTPGroup>
-											<InputOTPSeparator />
-											<InputOTPGroup>
-												<InputOTPSlot index={2} />
-												<InputOTPSlot index={3} />
-											</InputOTPGroup>
-											<InputOTPSeparator />
-											<InputOTPGroup>
-												<InputOTPSlot index={4} />
-												<InputOTPSlot index={5} />
-											</InputOTPGroup>
-										</InputOTP>
-									</FormControl>
-									<FormMessage>{errors?.otp ? errors.otp : ''}</FormMessage>
-								</FormItem>
-							)}
-						/>
-
 						<Button type='submit' className='w-full'>
 							Login
 						</Button>
@@ -129,7 +84,7 @@ export function LoginForm({ onSelectAuthOption }: AuthPageComponentProps) {
 				<SocialLogins type='Login' />
 				<div className='mt-4 text-center text-sm'>
 					Don&apos;t have an account?{' '}
-					<Button asChild variant='link' onClick={() => onSelectAuthOption('register')}>
+					<Button asChild variant='link'>
 						<Link href='#' className='underline'>
 							Sign up
 						</Link>
