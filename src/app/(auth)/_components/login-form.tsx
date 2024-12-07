@@ -11,7 +11,6 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {} from '@/components/ui/input-otp';
 import type { LoginFormErrors } from '@/lib/types/auth/auth.types';
 import type { Email } from '@/lib/types/validation.types';
 import { EmailSchema } from '@/lib/validations/schema/auth.email.login.schema';
@@ -22,7 +21,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useAuthenticationContext } from '../_context/auth-context';
-import { OTPForm } from './otp-form';
+import { OTPDialog } from './otp-dialog';
 import { SocialLogins } from './social-logins';
 
 export function LoginForm() {
@@ -54,7 +53,6 @@ export function LoginForm() {
 		loginDispatch({ type: 'email', email: values.email });
 		setIsOpen(true);
 		toast.success("We've sent you a one time password. Please check your emails.");
-		console.log(values);
 	};
 
 	return (
@@ -90,7 +88,7 @@ export function LoginForm() {
 						</Button>
 					</form>
 				</Form>
-				<OTPForm isOpen={isOpen} setIsOpen={setIsOpen} />
+				<OTPDialog isOpen={isOpen} setIsOpen={setIsOpen} />
 				<SocialLogins type='Login' />
 				<div className='mt-4 text-center text-sm'>
 					Don&apos;t have an account?{' '}
