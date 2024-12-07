@@ -13,28 +13,32 @@ import {
 import { Input } from '@/components/ui/input';
 import {} from '@/components/ui/input-otp';
 import type { LoginFormErrors } from '@/lib/types/auth/auth.types';
-import type { Email, Login } from '@/lib/types/validation.types';
-import { LoginSchema } from '@/lib/validations/schema/auth.email.login.schema';
+import type { Email } from '@/lib/types/validation.types';
+import { EmailSchema } from '@/lib/validations/schema/auth.email.login.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { useAuthenticationContext } from '../_context/auth-context';
+import { OTPForm } from './otp-form';
 import { SocialLogins } from './social-logins';
 
 export function LoginForm() {
 	const [errors, _setErrors] = useState<LoginFormErrors | null>(null);
+	const [isOpen, setIsOpen] = useState(false);
+	const { dispatch: loginDispatch } = useAuthenticationContext();
 	const _router = useRouter();
 
-	const form = useForm<Login>({
-		resolver: zodResolver(LoginSchema),
+	const form = useForm<Email>({
+		resolver: zodResolver(EmailSchema),
 		defaultValues: {
 			email: '',
-			otp: '',
 		},
 	});
 
-	const onSubmit = async (values: Email) => {
+	const onSubmit = (values: Email) => {
 		// 	console.log(values);
 		// 	const result = await loginUserAction(values);
 
@@ -47,6 +51,9 @@ export function LoginForm() {
 		// 	toast.success('Welcome back');
 		// 	router.push('/dashboard/todo');
 		// };
+		loginDispatch({ type: 'email', email: values.email });
+		setIsOpen(true);
+		toast.success("We've sent you a one time password. Please check your emails.");
 		console.log(values);
 	};
 
@@ -69,6 +76,7 @@ export function LoginForm() {
 										<Input
 											disabled={form.formState.isSubmitting}
 											placeholder='m@il.com'
+											autoComplete='email'
 											{...field}
 										/>
 									</FormControl>
@@ -78,11 +86,11 @@ export function LoginForm() {
 						/>
 
 						<Button type='submit' className='w-full'>
-							Login
+							Send me my code
 						</Button>
 					</form>
 				</Form>
-
+				<OTPForm isOpen={isOpen} setIsOpen={setIsOpen} />
 				<SocialLogins type='Login' />
 				<div className='mt-4 text-center text-sm'>
 					Don&apos;t have an account?{' '}
