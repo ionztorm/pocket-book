@@ -11,12 +11,12 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
 import type { LoginFormErrors } from '@/lib/types/auth/auth.types';
 import type { Email } from '@/lib/types/validation.types';
 import { EmailSchema } from '@/lib/validations/schema/auth.email.login.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -28,7 +28,6 @@ export function LoginForm() {
 	const [errors, _setErrors] = useState<LoginFormErrors | null>(null);
 	const [isOpen, setIsOpen] = useState(false);
 	const { dispatch: loginDispatch } = useAuthenticationContext();
-	const _router = useRouter();
 
 	const form = useForm<Email>({
 		resolver: zodResolver(EmailSchema),
@@ -38,18 +37,6 @@ export function LoginForm() {
 	});
 
 	const onSubmit = (values: Email) => {
-		// 	console.log(values);
-		// 	const result = await loginUserAction(values);
-
-		// 	if (result?.errors) {
-		// 		toast.error(result.errors.saving?.[0] || 'An error occurred');
-		// 		setErrors(result.errors);
-		// 		return;
-		// 	}
-
-		// 	toast.success('Welcome back');
-		// 	router.push('/dashboard/todo');
-		// };
 		loginDispatch({ type: 'email', email: values.email });
 		setIsOpen(true);
 		toast.success("We've sent you a one time password. Please check your emails.");
@@ -69,11 +56,11 @@ export function LoginForm() {
 							name='email'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Email</FormLabel>
+									<FormLabel className='sr-only'>Email</FormLabel>
 									<FormControl>
 										<Input
 											disabled={form.formState.isSubmitting}
-											placeholder='m@il.com'
+											placeholder='joe.bloggs@example.com'
 											autoComplete='email'
 											{...field}
 										/>
@@ -82,14 +69,16 @@ export function LoginForm() {
 								</FormItem>
 							)}
 						/>
-
-						<Button type='submit' className='w-full'>
-							Send me my code
+						<Button type='submit' className='w-full flex-1'>
+							Send a code
 						</Button>
 					</form>
 				</Form>
 				<OTPDialog isOpen={isOpen} setIsOpen={setIsOpen} />
-				<SocialLogins type='Login' />
+				<Separator />
+				<SocialLogins />
+
+				<Separator />
 				<div className='mt-4 text-center text-sm'>
 					Don&apos;t have an account?{' '}
 					<Button asChild variant='link'>

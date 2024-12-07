@@ -11,7 +11,11 @@ export type SocialLoginButtonActionTypes = Readonly<'Login' | 'Register'>;
 export type SocialLoginButtonProps = Readonly<{
 	provider: AuthLoginProviders;
 	icon: IconType;
-	type: SocialLoginButtonActionTypes;
+}>;
+
+export type OTPFormProps = Readonly<{
+	isOpen: boolean;
+	setIsOpen: (isOpen: boolean) => void;
 }>;
 
 export type TAuthenticationContext = {

@@ -1,10 +1,6 @@
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import type { OTPFormProps } from '@/lib/types/auth/auth.types';
 import { OTPForm } from './otp-form';
-
-export type OTPFormProps = Readonly<{
-	isOpen: boolean;
-	setIsOpen: (isOpen: boolean) => void;
-}>;
 
 export function OTPDialog({ isOpen, setIsOpen }: OTPFormProps) {
 	return (

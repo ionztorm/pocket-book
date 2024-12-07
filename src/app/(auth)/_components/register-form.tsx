@@ -16,10 +16,10 @@ import type { Signup } from '@/lib/types/validation.types';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import { useAuthenticationContext } from '../_context/auth-context';
 import { OTPDialog } from './otp-dialog';
@@ -28,7 +28,6 @@ export function RegisterForm() {
 	const [errors, _setErrors] = useState<SignupFormErrors | null>(null);
 	const [isOpen, setIsOpen] = useState(false);
 	const { dispatch: registerDispatch } = useAuthenticationContext();
-	const _router = useRouter();
 	const form = useForm<Signup>({
 		resolver: zodResolver(SignupSchema),
 		defaultValues: {
@@ -39,16 +38,6 @@ export function RegisterForm() {
 	const isPending = form.formState.isSubmitting;
 
 	const onSubmit = async (values: Signup) => {
-		// const result = await registerUserAction(values);
-		//
-		// if (result.errors) {
-		// 	toast.error(result.errors.saving?.[0] ?? 'An error occurred');
-		// 	setErrors(result.errors);
-		// 	return;
-		// }
-		//
-		// toast.success(`Welcome ${values.name}`);
-		// router.push('/dashboard/todo');
 		console.log(values);
 		registerDispatch({ type: 'name', name: values.name });
 		registerDispatch({ type: 'email', email: values.email });
@@ -70,7 +59,7 @@ export function RegisterForm() {
 							name='name'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Name</FormLabel>
+									<FormLabel className='sr-only'>Name</FormLabel>
 									<FormControl>
 										<Input
 											disabled={isPending}
@@ -88,12 +77,12 @@ export function RegisterForm() {
 							name='email'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Email</FormLabel>
+									<FormLabel className='sr-only'>Email</FormLabel>
 									<FormControl>
 										<Input
 											disabled={isPending}
 											autoComplete='email'
-											placeholder='e@mai.l'
+											placeholder='joe.bloggs@example.com'
 											type='email'
 											{...field}
 										/>
@@ -108,8 +97,9 @@ export function RegisterForm() {
 					</form>
 				</Form>
 				<OTPDialog isOpen={isOpen} setIsOpen={setIsOpen} />
-				<SocialLogins type='Register' />
-
+				<Separator />
+				<SocialLogins />
+				<Separator />
 				<div className='mt-4 text-center text-sm'>
 					Already have an account?{' '}
 					<Button asChild variant='link'>
