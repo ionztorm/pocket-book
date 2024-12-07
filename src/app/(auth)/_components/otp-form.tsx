@@ -17,24 +17,34 @@ import type { OTP } from '@/lib/types/validation.types';
 import { OTPSchema } from '@/lib/validations/schema/auth.email.login.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useAuthenticationContext } from '../_context/auth-context';
 
 export function OTPForm() {
+	const { dispatch: otpDispatch } = useAuthenticationContext();
 	const form = useForm<OTP>({
 		resolver: zodResolver(OTPSchema),
 		defaultValues: {
 			otp: '',
 		},
 	});
+
+	const onSubmit = (values: OTP) => {
+		console.log(values);
+		otpDispatch({ type: 'otp', otp: values.otp });
+	};
 	return (
 		<>
 			<DialogHeader className='items-center'>
-				<DialogTitle>OTP Bro</DialogTitle>
+				<DialogTitle>Enter your One Time Password</DialogTitle>
 				<DialogDescription asChild>
-					<p>Please enter your code. The code is valid for 5 minutes.</p>
+					<p>
+						Enter the temporary 6 digit code we sent to your email address. It's only valid for 5
+						minutes. You can copy and paste the code from the email if you like.
+					</p>
 				</DialogDescription>
 			</DialogHeader>
 			<Form {...form}>
-				<form>
+				<form onSubmit={form.handleSubmit(onSubmit)}>
 					<FormField
 						control={form.control}
 						name='otp'
@@ -59,13 +69,13 @@ export function OTPForm() {
 							</FormItem>
 						)}
 					/>
+					<DialogFooter>
+						<DialogClose asChild>
+							<Button type='submit'>Submit</Button>
+						</DialogClose>
+					</DialogFooter>
 				</form>
 			</Form>
-			<DialogFooter>
-				<DialogClose asChild>
-					<Button type='submit'>Submit</Button>
-				</DialogClose>
-			</DialogFooter>
 		</>
 	);
 }
