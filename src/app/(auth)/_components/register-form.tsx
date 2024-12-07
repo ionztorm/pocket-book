@@ -1,6 +1,4 @@
 'use client';
-
-import { registerUserAction } from '@/actions/auth.actions';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -23,10 +21,14 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { toast } from 'sonner';
+import { useAuthenticationContext } from '../_context/auth-context';
+import { OTPDialog } from './otp-dialog';
 import { SocialLogins } from './social-logins';
 export function RegisterForm() {
-	const [errors, setErrors] = useState<SignupFormErrors | null>(null);
-	const router = useRouter();
+	const [errors, _setErrors] = useState<SignupFormErrors | null>(null);
+	const [isOpen, setIsOpen] = useState(false);
+	const { dispatch: registerDispatch } = useAuthenticationContext();
+	const _router = useRouter();
 	const form = useForm<Signup>({
 		resolver: zodResolver(SignupSchema),
 		defaultValues: {
@@ -37,16 +39,21 @@ export function RegisterForm() {
 	const isPending = form.formState.isSubmitting;
 
 	const onSubmit = async (values: Signup) => {
-		const result = await registerUserAction(values);
-
-		if (result.errors) {
-			toast.error(result.errors.saving?.[0] ?? 'An error occurred');
-			setErrors(result.errors);
-			return;
-		}
-
-		toast.success(`Welcome ${values.name}`);
-		router.push('/dashboard/todo');
+		// const result = await registerUserAction(values);
+		//
+		// if (result.errors) {
+		// 	toast.error(result.errors.saving?.[0] ?? 'An error occurred');
+		// 	setErrors(result.errors);
+		// 	return;
+		// }
+		//
+		// toast.success(`Welcome ${values.name}`);
+		// router.push('/dashboard/todo');
+		console.log(values);
+		registerDispatch({ type: 'name', name: values.name });
+		registerDispatch({ type: 'email', email: values.email });
+		toast.success("We've sent you a one time password. Please check your emails.");
+		setIsOpen(true);
 	};
 
 	return (
@@ -65,7 +72,12 @@ export function RegisterForm() {
 								<FormItem>
 									<FormLabel>Name</FormLabel>
 									<FormControl>
-										<Input disabled={isPending} placeholder='Joe Bloggs' {...field} />
+										<Input
+											disabled={isPending}
+											autoComplete='name'
+											placeholder='Joe Bloggs'
+											{...field}
+										/>
 									</FormControl>
 									<FormMessage>{errors?.name ? errors.name : ''}</FormMessage>
 								</FormItem>
@@ -78,7 +90,13 @@ export function RegisterForm() {
 								<FormItem>
 									<FormLabel>Email</FormLabel>
 									<FormControl>
-										<Input disabled={isPending} placeholder='e@mai.l' type='email' {...field} />
+										<Input
+											disabled={isPending}
+											autoComplete='email'
+											placeholder='e@mai.l'
+											type='email'
+											{...field}
+										/>
 									</FormControl>
 									<FormMessage>{errors?.email ? errors.email : ''}</FormMessage>
 								</FormItem>
@@ -89,7 +107,7 @@ export function RegisterForm() {
 						</Button>
 					</form>
 				</Form>
-
+				<OTPDialog isOpen={isOpen} setIsOpen={setIsOpen} />
 				<SocialLogins type='Register' />
 
 				<div className='mt-4 text-center text-sm'>
