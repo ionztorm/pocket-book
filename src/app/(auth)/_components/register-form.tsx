@@ -20,9 +20,10 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Separator } from '@/components/ui/separator';
+import { sendOtpEmail } from '@/lib/utils/otpUtils';
 import { toast } from 'sonner';
 import { useAuthenticationContext } from '../_context/auth-context';
-import { OTPDialog } from './otp-dialog';
+import { OTPForm } from './otp-form';
 import { SocialLogins } from './social-logins';
 export function RegisterForm() {
 	const [errors, _setErrors] = useState<SignupFormErrors | null>(null);
@@ -38,6 +39,13 @@ export function RegisterForm() {
 	const isPending = form.formState.isSubmitting;
 
 	const onSubmit = async (values: Signup) => {
+		// const data = await authClient.emailOtp.sendVerificationOtp({
+		// 	email: values.email,
+		// 	type: 'email-verification',
+		// });
+		const data = await sendOtpEmail(values.email, 'email-verification');
+		console.log(data);
+		// const data = await signInWithOtp(values.email, values.otp);
 		console.log(values);
 		registerDispatch({ type: 'name', name: values.name });
 		registerDispatch({ type: 'email', email: values.email });
@@ -96,7 +104,7 @@ export function RegisterForm() {
 						</Button>
 					</form>
 				</Form>
-				<OTPDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+				<OTPForm type='email-verification' isOpen={isOpen} setIsOpen={setIsOpen} />
 				<Separator />
 				<SocialLogins />
 				<Separator />
