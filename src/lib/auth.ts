@@ -15,11 +15,9 @@ export const auth = betterAuth({
 			...schema,
 		},
 	}),
-	emailAndPassword: {
-		enabled: true,
-		autoSignIn: true,
-		requireEmailVerification: false,
-	},
+	// emailAndPassword: {
+	// 	enabled: true,
+	// },
 	socialProviders: {
 		google: {
 			clientId: env.AUTH_GOOGLE_ID,
@@ -33,22 +31,15 @@ export const auth = betterAuth({
 	plugins: [
 		nextCookies(),
 		emailOTP({
-			async sendVerificationOTP({ email, otp, type }) {
-				if (type === 'sign-in') {
-					await resend.emails.send({
-						from: 'Test <onboarding@resend.dev>',
-						to: email,
-						subject: 'Your One-Time-Password for Pocket Book',
-						html: `Your one time password is valid for 5  minutes: ${otp}`,
-					});
-				} else {
-					await resend.emails.send({
-						from: 'Test <onboarding@resend.dev>',
-						to: email,
-						subject: 'Pocket Book - Verify your email address',
-						html: `Thanks for choosing Pocket Book. You need to verify your email. Please proceed to login using this one-time-password: ${otp}. Your password is valid for 5 minutes.`,
-					});
-				}
+			async sendVerificationOTP({ email, otp }) {
+				const { data, error } = await resend.emails.send({
+					from: 'Test <onboarding@resend.dev>',
+					to: email,
+					subject: 'Your One-Time-Password for Pocket Book',
+					html: `Your one time password is valid for 5  minutes: ${otp}`,
+				});
+				console.log('data: ', data);
+				console.log('error: ', error);
 			},
 		}),
 	],
