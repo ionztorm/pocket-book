@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { authClient } from '@/lib/auth-client';
 import type { LoginFormErrors } from '@/lib/types/auth/auth.types';
 import type { Email } from '@/lib/types/validation.types';
 import { EmailSchema } from '@/lib/validations/schema/auth.email.login.schema';
@@ -21,7 +22,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useAuthenticationContext } from '../_context/auth-context';
-import { OTPDialog } from './otp-dialog';
+import { OTPForm } from './otp-form';
 import { SocialLogins } from './social-logins';
 
 export function LoginForm() {
@@ -36,7 +37,12 @@ export function LoginForm() {
 		},
 	});
 
-	const onSubmit = (values: Email) => {
+	const onSubmit = async (values: Email) => {
+		const data = await authClient.emailOtp.sendVerificationOtp({
+			email: values.email,
+			type: 'sign-in',
+		});
+		console.log(data); // NOTE: delete later
 		loginDispatch({ type: 'email', email: values.email });
 		setIsOpen(true);
 		toast.success("We've sent you a one time password. Please check your emails.");
@@ -74,7 +80,7 @@ export function LoginForm() {
 						</Button>
 					</form>
 				</Form>
-				<OTPDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+				<OTPForm type='sign-in' isOpen={isOpen} setIsOpen={setIsOpen} />
 				<Separator />
 				<SocialLogins />
 
