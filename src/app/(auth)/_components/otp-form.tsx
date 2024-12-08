@@ -15,6 +15,7 @@ import {
 	InputOTPSeparator,
 	InputOTPSlot,
 } from '@/components/ui/input-otp';
+import { Loading } from '@/components/ui/loading';
 import type { OTPFormProps } from '@/lib/types/auth/auth.types';
 import type { OTP } from '@/lib/types/validation.types';
 import { signInWithOtp } from '@/lib/utils/otpUtils';
@@ -34,6 +35,8 @@ export function OTPForm({ isOpen, setIsOpen }: OTPFormProps) {
 			otp: '',
 		},
 	});
+
+	const isPending = form.formState.isSubmitting;
 
 	const onSubmit = async (values: OTP) => {
 		console.log(values);
@@ -77,7 +80,7 @@ export function OTPForm({ isOpen, setIsOpen }: OTPFormProps) {
 								<FormItem className='flex flex-col items-center gap-2'>
 									<FormLabel className='sr-only'>Enter your one time password</FormLabel>
 									<FormControl>
-										<InputOTP maxLength={6} {...field}>
+										<InputOTP maxLength={6} {...field} disabled={isPending}>
 											<InputOTPGroup>
 												<InputOTPSlot index={0} />
 												<InputOTPSlot index={1} />
@@ -96,7 +99,9 @@ export function OTPForm({ isOpen, setIsOpen }: OTPFormProps) {
 						/>
 						<DialogFooter>
 							<DialogClose asChild>
-								<Button type='submit'>Submit</Button>
+								<Button type='submit' disabled={isPending}>
+									{isPending ? <Loading /> : 'Submit'}
+								</Button>
 							</DialogClose>
 						</DialogFooter>
 					</form>
