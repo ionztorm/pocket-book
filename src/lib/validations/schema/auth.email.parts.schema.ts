@@ -17,6 +17,7 @@ export const getPasswordSchema = (type: 'password' | 'confirmPassword') =>
 
 export const getOTPSchema = () =>
 	string()
+		.trim()
 		.min(6, { message: 'OTP must be 6 digits' })
 		.max(6, { message: 'OTP must be 6 digits' })
 		.regex(/^\d+$/, { message: 'OTP must contain only numbers' });
