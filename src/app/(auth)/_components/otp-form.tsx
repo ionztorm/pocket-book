@@ -16,9 +16,9 @@ import {
 	InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { Loading } from '@/components/ui/loading';
+import { authClient } from '@/lib/auth-client';
 import type { OTPFormProps } from '@/lib/types/auth/auth.types';
 import type { OTP } from '@/lib/types/validation.types';
-import { signInWithOtp } from '@/lib/utils/otpUtils';
 import { OTPSchema } from '@/lib/validations/schema/auth.email.login.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
@@ -40,21 +40,26 @@ export function OTPForm({ isOpen, setIsOpen }: OTPFormProps) {
 
 	const onSubmit = async (values: OTP) => {
 		console.log(values);
-		// check if email exists
 		if (!email) {
 			toast.error("It looks as though we don't have your email address");
 			router.push('/auth/register');
 			return null;
 		}
-
-		// attempt to sign in with OTP
-		const data = await signInWithOtp(email, values.otp);
-		console.log(data);
-		if (data.error) return toast.error(data.error.message);
-		// reset state and redirect
-		setEmail(null);
-		toast.success('You have successfully logged in');
-		return router.push('/dashboard/todo');
+		const data = await authClient.signIn.emailOtp(
+			{ email, otp: values.otp },
+			{
+				onSuccess: () => {
+					toast.success('You have successfully logged in');
+					setEmail(null);
+					return router.push('/dashboard/todo');
+				},
+				onError: (ctx) => {
+					toast.error(ctx.error.message);
+					return;
+				},
+			},
+		);
+		return data;
 	};
 
 	return (

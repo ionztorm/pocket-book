@@ -19,7 +19,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Separator } from '@/components/ui/separator';
-import { sendOtpEmail } from '@/lib/utils/otpUtils';
+import { authClient } from '@/lib/auth-client';
 import { EmailSchema } from '@/lib/validations/schema/auth.email.login.schema';
 import { toast } from 'sonner';
 import { useAuthenticationContext } from '../_context/auth-context';
@@ -38,10 +38,22 @@ export function RegisterForm() {
 	const isPending = form.formState.isSubmitting;
 
 	const onSubmit = async (values: Email) => {
-		await sendOtpEmail(values.email, 'email-verification');
-		setEmail(values.email);
-		toast.success("We've sent you a one time password. Please check your emails.");
-		setIsOpen(true);
+		// await sendOtpEmail(values.email, 'email-verification');
+		const data = await authClient.emailOtp.sendVerificationOtp(
+			{ email: values.email, type: 'email-verification' },
+			{
+				onSuccess: () => {
+					toast.success("We've sent you a one time password. Please check your emails.");
+					setEmail(values.email);
+					setIsOpen(true);
+				},
+				onError: (ctx) => {
+					toast.error(ctx.error.message);
+					return;
+				},
+			},
+		);
+		return data;
 	};
 
 	return (

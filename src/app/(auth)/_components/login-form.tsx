@@ -28,8 +28,7 @@ import { SocialLogins } from './social-logins';
 export function LoginForm() {
 	const [errors, _setErrors] = useState<LoginFormErrors | null>(null);
 	const [isOpen, setIsOpen] = useState(false);
-	const { dispatch: loginDispatch } = useAuthenticationContext();
-
+	const { setEmail } = useAuthenticationContext();
 	const form = useForm<Email>({
 		resolver: zodResolver(EmailSchema),
 		defaultValues: {
@@ -38,14 +37,21 @@ export function LoginForm() {
 	});
 
 	const onSubmit = async (values: Email) => {
-		const data = await authClient.emailOtp.sendVerificationOtp({
-			email: values.email,
-			type: 'sign-in',
-		});
-		console.log(data); // NOTE: delete later
-		loginDispatch({ type: 'email', email: values.email });
-		setIsOpen(true);
-		toast.success("We've sent you a one time password. Please check your emails.");
+		const data = await authClient.emailOtp.sendVerificationOtp(
+			{ email: values.email, type: 'email-verification' },
+			{
+				onSuccess: () => {
+					toast.success("We've sent you a one time password. Please check your emails.");
+					setEmail(values.email);
+					setIsOpen(true);
+				},
+				onError: (ctx) => {
+					toast.error(ctx.error.message);
+					return;
+				},
+			},
+		);
+		return data;
 	};
 
 	return (
@@ -80,7 +86,7 @@ export function LoginForm() {
 						</Button>
 					</form>
 				</Form>
-				<OTPForm type='sign-in' isOpen={isOpen} setIsOpen={setIsOpen} />
+				<OTPForm isOpen={isOpen} setIsOpen={setIsOpen} />
 				<Separator />
 				<SocialLogins />
 
