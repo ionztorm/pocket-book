@@ -28,7 +28,7 @@ import { SocialLogins } from './social-logins';
 export function RegisterForm() {
 	const [errors, _setErrors] = useState<SignupFormErrors | null>(null);
 	const [isOpen, setIsOpen] = useState(false);
-	const { dispatch: registerDispatch } = useAuthenticationContext();
+	const { setEmail } = useAuthenticationContext();
 	const form = useForm<Email>({
 		resolver: zodResolver(EmailSchema),
 		defaultValues: {
@@ -39,7 +39,7 @@ export function RegisterForm() {
 
 	const onSubmit = async (values: Email) => {
 		await sendOtpEmail(values.email, 'email-verification');
-		registerDispatch({ type: 'email', email: values.email });
+		setEmail(values.email);
 		toast.success("We've sent you a one time password. Please check your emails.");
 		setIsOpen(true);
 	};

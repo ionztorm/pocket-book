@@ -21,10 +21,8 @@ export type OTPFormProps = Readonly<{
 }>;
 
 export type TAuthenticationContext = {
-	state: AuthContextReducerState;
-	dispatch: Dispatch<AuthContextReducerAction>;
-	authFormState: AuthFormStates | null;
-	setAuthFormState: Dispatch<SetStateAction<AuthFormStates | null>>;
+	email: Email['email'] | null;
+	setEmail: Dispatch<SetStateAction<Email['email'] | null>>;
 };
 
 export type TAuthenticationContextProviderProps = {

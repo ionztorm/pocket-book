@@ -27,7 +27,7 @@ import { toast } from 'sonner';
 import { useAuthenticationContext } from '../_context/auth-context';
 
 export function OTPForm({ isOpen, setIsOpen }: OTPFormProps) {
-	const { dispatch: otpDispatch, state } = useAuthenticationContext();
+	const { email, setEmail } = useAuthenticationContext();
 	const router = useRouter();
 	const form = useForm<OTP>({
 		resolver: zodResolver(OTPSchema),
@@ -41,20 +41,18 @@ export function OTPForm({ isOpen, setIsOpen }: OTPFormProps) {
 	const onSubmit = async (values: OTP) => {
 		console.log(values);
 		// check if email exists
-		if (!state.email) {
+		if (!email) {
 			toast.error("It looks as though we don't have your email address");
 			router.push('/auth/register');
 			return null;
 		}
 
 		// attempt to sign in with OTP
-		const data = await signInWithOtp(state.email, values.otp);
+		const data = await signInWithOtp(email, values.otp);
 		console.log(data);
 		if (data.error) return toast.error(data.error.message);
 		// reset state and redirect
-		otpDispatch({ type: 'otp', otp: '' });
-		otpDispatch({ type: 'email', email: '' });
-		otpDispatch({ type: 'name', name: '' });
+		setEmail(null);
 		toast.success('You have successfully logged in');
 		return router.push('/dashboard/todo');
 	};
@@ -66,8 +64,8 @@ export function OTPForm({ isOpen, setIsOpen }: OTPFormProps) {
 					<DialogTitle>Enter your One Time Password</DialogTitle>
 					<DialogDescription asChild>
 						<p>
-							We've sent a temporary code to {state.email}. It's only valid for 5 minutes. Go get it
-							and paste it here.
+							We've sent a temporary code to {email}. It's only valid for 5 minutes. Go get it and
+							paste it here.
 						</p>
 					</DialogDescription>
 				</DialogHeader>
