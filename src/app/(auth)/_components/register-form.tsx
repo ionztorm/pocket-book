@@ -38,7 +38,6 @@ export function RegisterForm() {
 	const isPending = form.formState.isSubmitting;
 
 	const onSubmit = async (values: Email) => {
-		// await sendOtpEmail(values.email, 'email-verification');
 		const data = await authClient.emailOtp.sendVerificationOtp(
 			{ email: values.email, type: 'email-verification' },
 			{
