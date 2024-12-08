@@ -13,6 +13,8 @@ export type SocialLoginButtonProps = Readonly<{
 	icon: IconType;
 }>;
 
+export type OtpEmailTypes = 'sign-in' | 'email-verification';
+
 export type OTPFormProps = Readonly<{
 	isOpen: boolean;
 	setIsOpen: (isOpen: boolean) => void;
