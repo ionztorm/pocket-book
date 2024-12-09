@@ -4,7 +4,7 @@ import { env } from '@/lib/validations/validators/env.server.validator';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { nextCookies } from 'better-auth/next-js';
-import { emailOTP } from 'better-auth/plugins';
+import { emailOTP, twoFactor } from 'better-auth/plugins';
 import { resend } from './resend';
 
 export const auth = betterAuth({
@@ -15,9 +15,9 @@ export const auth = betterAuth({
 			...schema,
 		},
 	}),
-	// emailAndPassword: {
-	// 	enabled: true,
-	// },
+	emailAndPassword: {
+		enabled: true,
+	},
 	socialProviders: {
 		google: {
 			clientId: env.AUTH_GOOGLE_ID,
@@ -30,6 +30,7 @@ export const auth = betterAuth({
 	},
 	plugins: [
 		nextCookies(),
+		twoFactor(),
 		emailOTP({
 			async sendVerificationOTP({ email, otp, type }) {
 				if (type === 'sign-in') {
