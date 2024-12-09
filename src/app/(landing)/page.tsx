@@ -20,7 +20,7 @@ export default async function Home() {
 			)}
 			{session && (
 				<div className='flex gap-3'>
-					<UserMenu type='landing' side='bottom' />
+					<UserMenu type='landing' side='bottom' session={session} />
 				</div>
 			)}
 		</div>

@@ -14,3 +14,5 @@ export const authClient = createAuthClient({
 	baseURL: clientEnv.NEXT_PUBLIC_APP_URL,
 	plugins: [emailOTPClient()],
 });
+
+export type ClientSession = typeof authClient.$Infer.Session;

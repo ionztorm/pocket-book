@@ -1,22 +1,17 @@
+'use client';
 import { SidebarFooter, SidebarMenu, SidebarMenuItem } from '@/components/ui/sidebar';
 import { UserMenu } from '@/components/user-menu/user-menu';
-import { auth } from '@/lib/auth';
-import { headers } from 'next/headers';
+import { authClient } from '@/lib/auth-client';
 
-export async function SidebarUser() {
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	});
-
-	if (!session) {
-		return null;
-	}
+export function SidebarUser() {
+	const { data } = authClient.useSession();
+	if (!data) return null;
 
 	return (
 		<SidebarFooter>
 			<SidebarMenu>
 				<SidebarMenuItem>
-					<UserMenu side='top' />
+					<UserMenu side='top' session={data} />
 				</SidebarMenuItem>
 			</SidebarMenu>
 		</SidebarFooter>

@@ -1,42 +1,17 @@
 import { Button } from '@/components/ui/button';
-import {
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-} from '@/components/ui/dropdown-menu';
 import { SidebarMenuSubButton } from '@/components/ui/sidebar';
-import { UserMenuLogout } from '@/components/user-menu/user-menu-logout';
-import { auth } from '@/lib/auth';
+import type { UserMenuProps } from '@/lib/types/global.types';
 import { DropdownMenu, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
-import {
-	ChevronDown,
-	ChevronLeft,
-	ChevronRight,
-	ChevronUp,
-	CreditCard,
-	LayoutDashboard,
-	User,
-} from 'lucide-react';
-import { headers } from 'next/headers';
-import Link from 'next/link';
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from 'lucide-react';
 import { UserAvatar } from './user-avatar';
+import { UserMenuContent } from './user-menu-content';
 
-export type UserMenuProps = Readonly<{
-	side?: 'left' | 'right' | 'top' | 'bottom';
-	align?: 'start' | 'center' | 'end';
-	type?: 'sidebar' | 'landing';
-}>;
-
-export async function UserMenu({
+export function UserMenu({
 	side = 'bottom',
 	align = 'center',
 	type = 'sidebar',
+	session,
 }: UserMenuProps) {
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	});
-
 	if (!session) {
 		return null;
 	}
@@ -51,7 +26,7 @@ export async function UserMenu({
 	if (type === 'landing')
 		return (
 			<DropdownMenu>
-				<DropdownMenuTrigger asChild className='h-10 w-full'>
+				<DropdownMenuTrigger asChild className='h-10 w-full cursor-pointer'>
 					<Button variant='ghost' className='flex w-full items-center'>
 						<UserAvatar
 							name={session?.user.name}
@@ -78,29 +53,5 @@ export async function UserMenu({
 			</DropdownMenuTrigger>
 			<UserMenuContent side={side} align={align} />
 		</DropdownMenu>
-	);
-}
-
-function UserMenuContent({ side, align, type }: UserMenuProps) {
-	return (
-		<DropdownMenuContent side={side} align={align} className='w-56'>
-			<DropdownMenuLabel>Account</DropdownMenuLabel>
-			<DropdownMenuSeparator />
-			{type === 'landing' && (
-				<DropdownMenuItem asChild>
-					<Link href='/dashboard/todo'>
-						<LayoutDashboard className='mr-2 size-4' /> Dashboard
-					</Link>
-				</DropdownMenuItem>
-			)}
-			<DropdownMenuItem>
-				<CreditCard className='mr-2 size-4' /> Manage Subscription
-			</DropdownMenuItem>
-			<DropdownMenuItem>
-				<User className='mr-2 size-4' /> Manage Account
-			</DropdownMenuItem>
-			<DropdownMenuSeparator />
-			<UserMenuLogout />
-		</DropdownMenuContent>
 	);
 }
