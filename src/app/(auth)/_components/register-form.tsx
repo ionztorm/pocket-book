@@ -39,7 +39,7 @@ export function RegisterForm() {
 
 	const onSubmit = async (values: Email) => {
 		const data = await authClient.emailOtp.sendVerificationOtp(
-			{ email: values.email, type: 'email-verification' },
+			{ email: values.email, type: 'sign-in' },
 			{
 				onSuccess: () => {
 					toast.success("We've sent you a one time password. Please check your emails.");
@@ -88,7 +88,7 @@ export function RegisterForm() {
 						</Button>
 					</form>
 				</Form>
-				<OTPForm isOpen={isOpen} setIsOpen={setIsOpen} />
+				<OTPForm isOpen={isOpen} setIsOpen={setIsOpen} otpFormType='sign-in' />
 				<Separator />
 				<SocialLogins />
 				<Separator />

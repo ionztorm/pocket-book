@@ -31,15 +31,27 @@ export const auth = betterAuth({
 	plugins: [
 		nextCookies(),
 		emailOTP({
-			async sendVerificationOTP({ email, otp }) {
-				const { data, error } = await resend.emails.send({
-					from: 'Test <onboarding@resend.dev>',
-					to: email,
-					subject: 'Your One-Time-Password for Pocket Book',
-					html: `Your one time password is valid for 5  minutes: ${otp}`,
-				});
-				console.log('data: ', data);
-				console.log('error: ', error);
+			async sendVerificationOTP({ email, otp, type }) {
+				if (type === 'sign-in') {
+					const { data, error } = await resend.emails.send({
+						from: 'Test <onboarding@resend.dev>',
+						to: email,
+						subject: 'Your One-Time-Password for Pocket Book',
+						html: `Your one time password is valid for 5  minutes: ${otp}`,
+					});
+					console.log('data: ', data);
+					console.log('error: ', error);
+				}
+				if (type === 'email-verification') {
+					const { data, error } = await resend.emails.send({
+						from: 'Test <onboarding@resend.dev>',
+						to: email,
+						subject: 'Pocket Book verification',
+						html: `Your one time password is valid for 5  minutes: ${otp}`,
+					});
+					console.log('data: ', data);
+					console.log('error: ', error);
+				}
 			},
 		}),
 	],
