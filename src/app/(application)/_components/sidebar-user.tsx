@@ -16,7 +16,7 @@ export async function SidebarUser() {
 		<SidebarFooter>
 			<SidebarMenu>
 				<SidebarMenuItem>
-					<UserMenu side='top' />
+					<UserMenu side='top' session={session} />
 				</SidebarMenuItem>
 			</SidebarMenu>
 		</SidebarFooter>
