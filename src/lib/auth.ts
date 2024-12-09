@@ -4,6 +4,8 @@ import { env } from '@/lib/validations/validators/env.server.validator';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { nextCookies } from 'better-auth/next-js';
+import { emailOTP } from 'better-auth/plugins';
+import { resend } from './resend';
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
@@ -13,11 +15,9 @@ export const auth = betterAuth({
 			...schema,
 		},
 	}),
-	emailAndPassword: {
-		enabled: true,
-		autoSignIn: true,
-		requireEmailVerification: false,
-	},
+	// emailAndPassword: {
+	// 	enabled: true,
+	// },
 	socialProviders: {
 		google: {
 			clientId: env.AUTH_GOOGLE_ID,
@@ -28,5 +28,31 @@ export const auth = betterAuth({
 			clientSecret: env.AUTH_GITHUB_SECRET,
 		},
 	},
-	plugins: [nextCookies()],
+	plugins: [
+		nextCookies(),
+		emailOTP({
+			async sendVerificationOTP({ email, otp, type }) {
+				if (type === 'sign-in') {
+					const { data, error } = await resend.emails.send({
+						from: 'Test <onboarding@resend.dev>',
+						to: email,
+						subject: 'Your One-Time-Password for Pocket Book',
+						html: `Your one time password is valid for 5  minutes: ${otp}`,
+					});
+					console.log('data: ', data);
+					console.log('error: ', error);
+				}
+				if (type === 'email-verification') {
+					const { data, error } = await resend.emails.send({
+						from: 'Test <onboarding@resend.dev>',
+						to: email,
+						subject: 'Pocket Book verification',
+						html: `Your one time password is valid for 5  minutes: ${otp}`,
+					});
+					console.log('data: ', data);
+					console.log('error: ', error);
+				}
+			},
+		}),
+	],
 });

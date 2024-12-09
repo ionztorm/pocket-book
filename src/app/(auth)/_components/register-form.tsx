@@ -1,4 +1,4 @@
-import { registerUserAction } from '@/actions/auth.actions';
+'use client';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -11,41 +11,48 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Loading } from '@/components/ui/loading';
-import type { AuthPageComponentProps, SignupFormErrors } from '@/lib/types/auth/auth.types';
-import type { Signup } from '@/lib/types/validation.types';
-import { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
+import type { SignupFormErrors } from '@/lib/types/auth/auth.types';
+import type { Email } from '@/lib/types/validation.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { Separator } from '@/components/ui/separator';
+import { authClient } from '@/lib/auth-client';
+import { EmailSchema } from '@/lib/validations/schema/auth.email.login.schema';
 import { toast } from 'sonner';
-export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
-	const [errors, setErrors] = useState<SignupFormErrors | null>(null);
-	const router = useRouter();
-	const form = useForm<Signup>({
-		resolver: zodResolver(SignupSchema),
+import { useAuthenticationContext } from '../_context/auth-context';
+import { OTPForm } from './otp-form';
+import { SocialLogins } from './social-logins';
+export function RegisterForm() {
+	const [errors, _setErrors] = useState<SignupFormErrors | null>(null);
+	const [isOpen, setIsOpen] = useState(false);
+	const { setEmail } = useAuthenticationContext();
+	const form = useForm<Email>({
+		resolver: zodResolver(EmailSchema),
 		defaultValues: {
-			name: '',
 			email: '',
-			password: '',
-			confirmPassword: '',
 		},
 	});
 	const isPending = form.formState.isSubmitting;
 
-	const onSubmit = async (values: Signup) => {
-		const result = await registerUserAction(values);
-
-		if (result.errors) {
-			toast.error(result.errors.saving?.[0] || 'An error occurred');
-			setErrors(result.errors);
-			return;
-		}
-
-		toast.success(`Welcome ${values.name}`);
-		router.push('/dashboard/todo');
+	const onSubmit = async (values: Email) => {
+		const data = await authClient.emailOtp.sendVerificationOtp(
+			{ email: values.email, type: 'sign-in' },
+			{
+				onSuccess: () => {
+					toast.success("We've sent you a one time password. Please check your emails.");
+					setEmail(values.email);
+					setIsOpen(true);
+				},
+				onError: (ctx) => {
+					toast.error(ctx.error.message);
+					return;
+				},
+			},
+		);
+		return data;
 	};
 
 	return (
@@ -59,53 +66,20 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 					<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-3'>
 						<FormField
 							control={form.control}
-							name='name'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Name</FormLabel>
-									<FormControl>
-										<Input disabled={isPending} placeholder='Joe Bloggs' {...field} />
-									</FormControl>
-									<FormMessage>{errors?.name ? errors.name : ''}</FormMessage>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
 							name='email'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Email</FormLabel>
+									<FormLabel className='sr-only'>Email</FormLabel>
 									<FormControl>
-										<Input disabled={isPending} placeholder='e@mai.l' type='email' {...field} />
+										<Input
+											disabled={isPending}
+											autoComplete='email'
+											placeholder='joe.bloggs@example.com'
+											type='email'
+											{...field}
+										/>
 									</FormControl>
 									<FormMessage>{errors?.email ? errors.email : ''}</FormMessage>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='password'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Password</FormLabel>
-									<FormControl>
-										<Input disabled={isPending} {...field} type='password' />
-									</FormControl>
-									<FormMessage>{errors?.password ? errors.password : ''}</FormMessage>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name='confirmPassword'
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Confirm Password</FormLabel>
-									<FormControl>
-										<Input disabled={isPending} {...field} type='password' />
-									</FormControl>
-									<FormMessage>{errors?.confirmPassword ? errors.confirmPassword : ''}</FormMessage>
 								</FormItem>
 							)}
 						/>
@@ -114,11 +88,14 @@ export function RegisterForm({ onSelectAuthOption }: AuthPageComponentProps) {
 						</Button>
 					</form>
 				</Form>
-
+				<OTPForm isOpen={isOpen} setIsOpen={setIsOpen} otpFormType='sign-in' />
+				<Separator />
+				<SocialLogins />
+				<Separator />
 				<div className='mt-4 text-center text-sm'>
 					Already have an account?{' '}
-					<Button asChild variant='link' onClick={() => onSelectAuthOption('login')}>
-						<Link href='#' className='underline'>
+					<Button asChild variant='link'>
+						<Link href='/auth/login' className='underline'>
 							Log in
 						</Link>
 					</Button>
