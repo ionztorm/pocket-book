@@ -8,6 +8,7 @@ export const user = pgTable('user', {
 	image: text('image'),
 	createdAt: timestamp('createdAt').notNull(),
 	updatedAt: timestamp('updatedAt').notNull(),
+	twoFactorEnabled: boolean('twoFactorEnabled'),
 });
 
 export const session = pgTable('session', {
@@ -48,4 +49,13 @@ export const verification = pgTable('verification', {
 	expiresAt: timestamp('expiresAt').notNull(),
 	createdAt: timestamp('createdAt'),
 	updatedAt: timestamp('updatedAt'),
+});
+
+export const twoFactor = pgTable('twoFactor', {
+	id: text('id').primaryKey(),
+	secret: text('secret').notNull(),
+	backupCodes: text('backupCodes').notNull(),
+	userId: text('userId')
+		.notNull()
+		.references(() => user.id),
 });
