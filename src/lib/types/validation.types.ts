@@ -1,11 +1,11 @@
+import type { EnvironmentSchema } from '@/lib/validations/schema/env.var.schema';
+import type { z } from 'zod';
 import type {
 	EmailSchema,
 	LoginSchema,
 	OTPSchema,
-} from '@/lib/validations/schema/auth.email.login.schema';
-import type { SignupSchema } from '@/lib/validations/schema/auth.email.signup.schema';
-import type { EnvironmentSchema } from '@/lib/validations/schema/env.var.schema';
-import type { z } from 'zod';
+	SignupSchema,
+} from '../validations/schema/auth.email.auth.schema';
 
 export type Environment = z.infer<typeof EnvironmentSchema>;
 export type Login = z.infer<typeof LoginSchema>;
