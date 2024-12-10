@@ -15,12 +15,6 @@ export type SocialLoginButtonProps = Readonly<{
 
 export type OtpEmailTypes = 'sign-in' | 'email-verification' | 'forget-password';
 
-export type OTPFormProps = Readonly<{
-	isOpen: boolean;
-	setIsOpen: (isOpen: boolean) => void;
-	otpFormType: OtpEmailTypes;
-}>;
-
 export type TAuthenticationContext = {
 	email: Email['email'] | null;
 	setEmail: Dispatch<SetStateAction<Email['email'] | null>>;
@@ -56,3 +50,16 @@ export type FormErrors<T extends string> = Readonly<{
 
 export type SignupFormErrors = Readonly<FormErrors<SignupFields>>;
 export type LoginFormErrors = Readonly<FormErrors<LoginFields>>;
+
+// Component Props
+
+export type AuthCardProps = {
+	title: string;
+	description: string;
+} & ChildrenProps;
+
+export type OTPFormProps = Readonly<{
+	isOpen: boolean;
+	setIsOpen: (isOpen: boolean) => void;
+	otpFormType: OtpEmailTypes;
+}>;
