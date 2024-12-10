@@ -19,7 +19,7 @@ import { Loading } from '@/components/ui/loading';
 import { authClient } from '@/lib/auth-client';
 import type { OTPFormProps } from '@/lib/types/auth/auth.types';
 import type { OTP } from '@/lib/types/validation.types';
-import { OTPSchema } from '@/lib/validations/schema/auth.email.login.schema';
+import { OTPSchema } from '@/lib/validations/schema/auth.email.auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';

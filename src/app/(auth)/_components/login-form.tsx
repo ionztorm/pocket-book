@@ -10,15 +10,14 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Loading } from '@/components/ui/loading';
 import { Separator } from '@/components/ui/separator';
-import { authClient } from '@/lib/auth-client';
 import type { LoginFormErrors } from '@/lib/types/auth/auth.types';
-import type { Email } from '@/lib/types/validation.types';
-import { EmailSchema } from '@/lib/validations/schema/auth.email.login.schema';
+import type { Login } from '@/lib/types/validation.types';
+import { LoginSchema } from '@/lib/validations/schema/auth.email.auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { useAuthenticationContext } from '../_context/auth-context';
 import { AuthCard } from './auth-card';
 import { OTPForm } from './otp-form';
@@ -28,29 +27,33 @@ export function LoginForm() {
 	const [errors, _setErrors] = useState<LoginFormErrors | null>(null);
 	const [isOpen, setIsOpen] = useState(false);
 	const { setEmail } = useAuthenticationContext();
-	const form = useForm<Email>({
-		resolver: zodResolver(EmailSchema),
+	const form = useForm<Login>({
+		resolver: zodResolver(LoginSchema),
 		defaultValues: {
 			email: '',
 		},
 	});
 
-	const onSubmit = async (values: Email) => {
-		const data = await authClient.emailOtp.sendVerificationOtp(
-			{ email: values.email, type: 'sign-in' },
-			{
-				onSuccess: () => {
-					toast.success("We've sent you a one time password. Please check your emails.");
-					setEmail(values.email);
-					setIsOpen(true);
-				},
-				onError: (ctx) => {
-					toast.error(ctx.error.message);
-					return;
-				},
-			},
-		);
-		return data;
+	const isPending = form.formState.isSubmitting;
+
+	const onSubmit = async (values: Login) => {
+		console.log(values);
+		setEmail(values.email);
+		// const data = await authClient.emailOtp.sendVerificationOtp(
+		// 	{ email: values.email, type: 'sign-in' },
+		// 	{
+		// 		onSuccess: () => {
+		// 			toast.success("We've sent you a one time password. Please check your emails.");
+		// 			setEmail(values.email);
+		// 			setIsOpen(true);
+		// 		},
+		// 		onError: (ctx) => {
+		// 			toast.error(ctx.error.message);
+		// 			return;
+		// 		},
+		// 	},
+		// );
+		// return data;
 	};
 
 	return (
@@ -62,7 +65,7 @@ export function LoginForm() {
 						name='email'
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel className='sr-only'>Email</FormLabel>
+								<FormLabel>Email</FormLabel>
 								<FormControl>
 									<Input
 										disabled={form.formState.isSubmitting}
@@ -75,8 +78,27 @@ export function LoginForm() {
 							</FormItem>
 						)}
 					/>
+
+					<FormField
+						control={form.control}
+						name='password'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Password</FormLabel>
+								<FormControl>
+									<Input
+										disabled={form.formState.isSubmitting}
+										placeholder='*******'
+										autoComplete='password'
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 					<Button type='submit' className='w-full flex-1'>
-						Submit
+						{isPending ? <Loading /> : 'Login'}
 					</Button>
 				</form>
 			</Form>
