@@ -19,7 +19,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuthenticationContext } from '../_context/auth-context';
-import { AuthCard } from './auth-card';
 import { OTPForm } from './otp-form';
 import { SocialLogins } from './social-logins';
 
@@ -57,7 +56,7 @@ export function LoginForm() {
 	};
 
 	return (
-		<AuthCard title='Welcome back!' description='Enter your details to continue...'>
+		<>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-4'>
 					<FormField
@@ -71,6 +70,7 @@ export function LoginForm() {
 										disabled={form.formState.isSubmitting}
 										placeholder='joe.bloggs@example.com'
 										autoComplete='email'
+										type='email'
 										{...field}
 									/>
 								</FormControl>
@@ -100,11 +100,11 @@ export function LoginForm() {
 					<Button type='submit' className='w-full flex-1'>
 						{isPending ? <Loading /> : 'Login'}
 					</Button>
+					<Separator />
+					<SocialLogins />
 				</form>
 			</Form>
 			<OTPForm isOpen={isOpen} setIsOpen={setIsOpen} otpFormType='sign-in' />
-			<Separator />
-			<SocialLogins />
-		</AuthCard>
+		</>
 	);
 }

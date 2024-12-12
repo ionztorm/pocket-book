@@ -19,7 +19,6 @@ import { useForm } from 'react-hook-form';
 import { Separator } from '@/components/ui/separator';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.auth.schema';
 import { useAuthenticationContext } from '../_context/auth-context';
-import { AuthCard } from './auth-card';
 import { OTPForm } from './otp-form';
 import { SocialLogins } from './social-logins';
 export function RegisterForm() {
@@ -29,10 +28,10 @@ export function RegisterForm() {
 	const form = useForm<Signup>({
 		resolver: zodResolver(SignupSchema),
 		defaultValues: {
-			name: '',
+			// name: '',
 			email: '',
 			password: '',
-			confirmPassword: '',
+			// confirmPassword: '',
 		},
 	});
 	const isPending = form.formState.isSubmitting;
@@ -58,28 +57,28 @@ export function RegisterForm() {
 	};
 
 	return (
-		<AuthCard title='Welcome aboard!' description='Enter your login details to get started...'>
+		<>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-4'>
-					<FormField
-						control={form.control}
-						name='name'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Name</FormLabel>
-								<FormControl>
-									<Input
-										disabled={isPending}
-										autoComplete='name'
-										placeholder='Joe Bloggs'
-										type='text'
-										{...field}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+					{/* <FormField */}
+					{/* 	control={form.control} */}
+					{/* 	name='name' */}
+					{/* 	render={({ field }) => ( */}
+					{/* 		<FormItem> */}
+					{/* 			<FormLabel>Name</FormLabel> */}
+					{/* 			<FormControl> */}
+					{/* 				<Input */}
+					{/* 					disabled={isPending} */}
+					{/* 					autoComplete='name' */}
+					{/* 					placeholder='Joe Bloggs' */}
+					{/* 					type='text' */}
+					{/* 					{...field} */}
+					{/* 				/> */}
+					{/* 			</FormControl> */}
+					{/* 			<FormMessage /> */}
+					{/* 		</FormItem> */}
+					{/* 	)} */}
+					{/* /> */}
 					<FormField
 						control={form.control}
 						name='email'
@@ -120,33 +119,33 @@ export function RegisterForm() {
 						)}
 					/>
 
-					<FormField
-						control={form.control}
-						name='confirmPassword'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Confirm Password</FormLabel>
-								<FormControl>
-									<Input
-										disabled={isPending}
-										autoComplete='password'
-										placeholder='*******'
-										type='password'
-										{...field}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+					{/* <FormField */}
+					{/* 	control={form.control} */}
+					{/* 	name='confirmPassword' */}
+					{/* 	render={({ field }) => ( */}
+					{/* 		<FormItem> */}
+					{/* 			<FormLabel>Confirm Password</FormLabel> */}
+					{/* 			<FormControl> */}
+					{/* 				<Input */}
+					{/* 					disabled={isPending} */}
+					{/* 					autoComplete='password' */}
+					{/* 					placeholder='*******' */}
+					{/* 					type='password' */}
+					{/* 					{...field} */}
+					{/* 				/> */}
+					{/* 			</FormControl> */}
+					{/* 			<FormMessage /> */}
+					{/* 		</FormItem> */}
+					{/* 	)} */}
+					{/* /> */}
 					<Button type='submit' disabled={isPending}>
 						{isPending ? <Loading /> : 'Register'}
 					</Button>
+					<Separator />
+					<SocialLogins />
 				</form>
 			</Form>
 			<OTPForm isOpen={isOpen} setIsOpen={setIsOpen} otpFormType='sign-in' />
-			<Separator />
-			<SocialLogins />
-		</AuthCard>
+		</>
 	);
 }
