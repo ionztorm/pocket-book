@@ -1,3 +1,4 @@
+'use client';
 import { LoginForm } from '@/app/(auth)/_components/login-form';
 import { RegisterForm } from '@/app/(auth)/_components/register-form';
 import {
@@ -8,13 +9,15 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useRouter } from 'next/navigation';
 
 export default function AuthIntersectionDialog() {
+	const router = useRouter();
 	return (
-		<Dialog defaultOpen>
+		<Dialog defaultOpen onOpenChange={() => router.back()}>
 			<DialogContent>
 				<DialogHeader className='grid gap-2'>
-					<DialogTitle>Register or Login</DialogTitle>
+					<DialogTitle className='text-xl'>Register or Login</DialogTitle>
 					<DialogDescription>
 						Join us by registering a new account, or log back in if you're returning.
 					</DialogDescription>
