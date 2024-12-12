@@ -3,7 +3,7 @@ import { string } from 'zod';
 export const getNameSchema = () =>
 	string({ required_error: 'Name is required' })
 		.min(2, { message: 'Minimum 2 characters are required' })
-		.max(20, { message: 'Maximum of 20 characters are allowed' });
+		.max(60, { message: 'Maximum of 60 characters are allowed' });
 
 export const getEmailSchema = () =>
 	string({ required_error: 'Email is required' })
