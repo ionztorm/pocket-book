@@ -13,7 +13,12 @@ export function LoginButtonSocial({ provider, icon }: SocialLoginButtonProps) {
 	};
 
 	return (
-		<Button variant='outline' className='w-full' onClick={() => socialLogin(provider)}>
+		<Button
+			type='button'
+			variant='outline'
+			className='w-full'
+			onClick={() => socialLogin(provider)}
+		>
 			<Icon />
 			{capitalise(provider)}
 		</Button>
