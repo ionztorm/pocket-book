@@ -10,18 +10,19 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Loading } from '@/components/ui/loading';
-import type { SignupFormErrors } from '@/lib/types/auth/auth.types';
 import type { Signup } from '@/lib/types/validation.types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Separator } from '@/components/ui/separator';
+import { authClient } from '@/lib/auth-client';
+import type { RegisterFormProps } from '@/lib/types/auth/auth.types';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.auth.schema';
+import { toast } from 'sonner';
 import { SocialLogins } from './social-logins';
-export function RegisterForm() {
-	const [_errors, _setErrors] = useState<SignupFormErrors | null>(null);
-	const [_isOpen, _setIsOpen] = useState(false);
+
+export function RegisterForm({ setIsSubmitted }: RegisterFormProps) {
 	const form = useForm<Signup>({
 		resolver: zodResolver(SignupSchema),
 		defaultValues: {
@@ -32,8 +33,21 @@ export function RegisterForm() {
 	});
 	const isPending = form.formState.isSubmitting;
 
-	const onSubmit = (values: Signup) => {
-		console.log(values);
+	const onSubmit = async (values: Signup) => {
+		const { error } = await authClient.signUp.email(
+			{
+				...values,
+			},
+			{
+				onSuccess: () => {
+					toast.success('Welcome! Please check your emails and verify yur email address.');
+					setIsSubmitted(true);
+				},
+			},
+		);
+
+		// TODO: Handle errors
+		if (error) return console.log(error);
 	};
 
 	const emailValue = form.watch('email');
@@ -86,7 +100,7 @@ export function RegisterForm() {
 								<FormControl>
 									<Input
 										disabled={isPending}
-										autoComplete='password'
+										autoComplete='new-password'
 										placeholder='*******'
 										type='password'
 										{...field}
