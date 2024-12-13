@@ -42,13 +42,22 @@ export type LoginFormErrors = Readonly<FormErrors<LoginFields>>;
 
 // Component Props
 
-export type AuthCardProps = {
+export type AuthCardProps = Readonly<{
 	title: string;
 	description: string;
-} & ChildrenProps;
+}> &
+	ChildrenProps;
 
 export type OTPFormProps = Readonly<{
 	isOpen: boolean;
 	setIsOpen: (isOpen: boolean) => void;
 	otpFormType: OtpEmailTypes;
+}>;
+
+export type RegisterFormProps = Readonly<{
+	setIsSubmitted: Dispatch<SetStateAction<boolean>>;
+}>;
+
+export type AuthTabsDialogProps = Readonly<{
+	setIsSubmitted: Dispatch<SetStateAction<boolean>>;
 }>;
