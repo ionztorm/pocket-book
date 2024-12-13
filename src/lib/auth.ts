@@ -8,6 +8,7 @@ import { emailOTP, twoFactor } from 'better-auth/plugins';
 import { resend } from './resend';
 
 export const auth = betterAuth({
+	appName: 'Pocket Book',
 	database: drizzleAdapter(db, {
 		provider: 'pg',
 
@@ -17,6 +18,20 @@ export const auth = betterAuth({
 	}),
 	emailAndPassword: {
 		enabled: true,
+		autoSignIn: true,
+		requireEmailVerification: true,
+	},
+	emailVerification: {
+		sendOnSignUp: true,
+		autoSignInAfterVerification: true,
+		sendVerificationEmail: async ({ user, url }) => {
+			await resend.emails.send({
+				from: 'Test <onboarding@resend.dev>',
+				to: user.email,
+				subject: 'Pocket Book - Verify Email',
+				html: `Click the link to verify your email: ${url}`,
+			});
+		},
 	},
 	socialProviders: {
 		google: {
@@ -32,6 +47,7 @@ export const auth = betterAuth({
 		nextCookies(),
 		twoFactor(),
 		emailOTP({
+			sendVerificationOnSignUp: true,
 			async sendVerificationOTP({ email, otp, type }) {
 				if (type === 'sign-in') {
 					const { data, error } = await resend.emails.send({
