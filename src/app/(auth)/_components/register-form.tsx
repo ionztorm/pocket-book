@@ -12,17 +12,22 @@ import { Input } from '@/components/ui/input';
 import { Loading } from '@/components/ui/loading';
 import type { Signup } from '@/lib/types/validation.types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { OTPForm } from '@/app/(auth)/_components/otp-form';
+import { SocialLogins } from '@/app/(auth)/_components/social-logins';
+import { useAuthenticationContext } from '@/app/(auth)/_context/auth-context';
 import { Separator } from '@/components/ui/separator';
 import { authClient } from '@/lib/auth-client';
 import type { RegisterFormProps } from '@/lib/types/auth/auth.types';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.auth.schema';
 import { toast } from 'sonner';
-import { SocialLogins } from './social-logins';
 
 export function RegisterForm({ setIsSubmitted }: RegisterFormProps) {
+	const [isOpen, setIsOpen] = useState(false);
+	const { setEmail } = useAuthenticationContext();
+
 	const form = useForm<Signup>({
 		resolver: zodResolver(SignupSchema),
 		defaultValues: {
@@ -40,7 +45,9 @@ export function RegisterForm({ setIsSubmitted }: RegisterFormProps) {
 			},
 			{
 				onSuccess: () => {
-					toast.success('Welcome! Please check your emails and verify yur email address.');
+					toast.success('Welcome! Please check your emails and verify your email address.');
+					setEmail(values.email);
+					setIsOpen(true);
 					setIsSubmitted(true);
 				},
 			},
@@ -118,6 +125,7 @@ export function RegisterForm({ setIsSubmitted }: RegisterFormProps) {
 					<SocialLogins />
 				</form>
 			</Form>
+			<OTPForm isOpen={isOpen} setIsOpen={setIsOpen} otpFormType='email-verification' />
 		</>
 	);
 }
