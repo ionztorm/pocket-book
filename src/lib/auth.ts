@@ -22,7 +22,7 @@ export const auth = betterAuth({
 		requireEmailVerification: true,
 	},
 	emailVerification: {
-		sendOnSignUp: true,
+		// sendOnSignUp: true,
 		autoSignInAfterVerification: true,
 		sendVerificationEmail: async ({ user, url }) => {
 			await resend.emails.send({
@@ -44,21 +44,10 @@ export const auth = betterAuth({
 		},
 	},
 	plugins: [
-		nextCookies(),
 		twoFactor(),
 		emailOTP({
 			sendVerificationOnSignUp: true,
 			async sendVerificationOTP({ email, otp, type }) {
-				if (type === 'sign-in') {
-					const { data, error } = await resend.emails.send({
-						from: 'Test <onboarding@resend.dev>',
-						to: email,
-						subject: 'Your One-Time-Password for Pocket Book',
-						html: `Your one time password is valid for 5  minutes: ${otp}`,
-					});
-					console.log('data: ', data);
-					console.log('error: ', error);
-				}
 				if (type === 'email-verification') {
 					const { data, error } = await resend.emails.send({
 						from: 'Test <onboarding@resend.dev>',
@@ -71,6 +60,7 @@ export const auth = betterAuth({
 				}
 			},
 		}),
+		nextCookies(),
 	],
 });
 
