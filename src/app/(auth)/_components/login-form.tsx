@@ -88,9 +88,10 @@ export function LoginForm() {
 								<FormLabel>Password</FormLabel>
 								<FormControl>
 									<Input
+										type='password'
 										disabled={form.formState.isSubmitting}
 										placeholder='*******'
-										autoComplete='password'
+										autoComplete='current-password'
 										{...field}
 									/>
 								</FormControl>
