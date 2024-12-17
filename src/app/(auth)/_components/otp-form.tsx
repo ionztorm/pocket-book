@@ -26,7 +26,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useAuthenticationContext } from '../_context/auth-context';
 
-export function OTPForm({ isOpen, setIsOpen, otpFormType }: OTPFormProps) {
+export function OTPForm({ isOpen, setIsOpen }: OTPFormProps) {
 	const { email, setEmail } = useAuthenticationContext();
 	const router = useRouter();
 	const form = useForm<OTP>({
@@ -39,47 +39,30 @@ export function OTPForm({ isOpen, setIsOpen, otpFormType }: OTPFormProps) {
 	const isPending = form.formState.isSubmitting;
 
 	const onSubmit = async (values: OTP) => {
-		console.log(values);
 		if (!email) {
 			toast.error("It looks as though we don't have your email address");
 			router.push('/auth/register');
-			return null;
+			return;
 		}
 
-		if (otpFormType === 'sign-in') {
-			const data = await authClient.signIn.emailOtp(
-				{ email, otp: values.otp },
-				{
-					onSuccess: () => {
-						toast.success('You have successfully logged in');
-						setEmail(null);
-						return router.push('/dashboard/todo');
-					},
-					onError: (ctx) => {
-						toast.error(ctx.error.message);
-					},
+		const data = await authClient.emailOtp.verifyEmail(
+			{ email, otp: values.otp },
+			{
+				onSuccess: () => {
+					toast.success(
+						"You have successfully verified your email address and we've logged you in.",
+					);
+					setEmail(null);
+					return router.push('/dashboard/todo');
 				},
-			);
-			if (data) return data;
-		} else if (otpFormType === 'email-verification') {
-			const data = await authClient.emailOtp.verifyEmail(
-				{ email, otp: values.otp },
-				{
-					onSuccess: () => {
-						toast.success(
-							"You have successfully verified your email address and we've logged you in.",
-						);
-						setEmail(null);
-						return router.push('/dashboard/todo');
-					},
-					onError: (ctx) => {
-						toast.error(ctx.error.message);
-					},
+				onError: (ctx) => {
+					toast.error(ctx.error.message);
 				},
-			);
-			if (data) return data;
-		}
-		return null;
+			},
+		);
+		if (data) return data;
+
+		return;
 	};
 
 	return (

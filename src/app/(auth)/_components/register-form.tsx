@@ -130,7 +130,7 @@ export function RegisterForm({ setIsSubmitted }: RegisterFormProps) {
 					<SocialLogins />
 				</form>
 			</Form>
-			<OTPForm isOpen={isOpen} setIsOpen={setIsOpen} otpFormType='email-verification' />
+			<OTPForm isOpen={isOpen} setIsOpen={setIsOpen} />
 		</>
 	);
 }

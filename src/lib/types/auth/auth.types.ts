@@ -51,7 +51,7 @@ export type AuthCardProps = Readonly<{
 export type OTPFormProps = Readonly<{
 	isOpen: boolean;
 	setIsOpen: (isOpen: boolean) => void;
-	otpFormType: OtpEmailTypes;
+	// otpFormType: OtpEmailTypes;
 }>;
 
 export type RegisterFormProps = Readonly<{
