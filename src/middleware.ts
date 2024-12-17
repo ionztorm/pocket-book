@@ -13,7 +13,7 @@ export default async function middlware(request: NextRequest) {
 
 	// accessing /dashboard/*  or /auth while not logged in -> auth
 	if (!session && request.nextUrl.pathname.startsWith('/dashboard')) {
-		return NextResponse.redirect(new URL('/auth/login', request.url));
+		return NextResponse.redirect(new URL('/auth', request.url));
 	}
 
 	// accessing /auth or /dashboard while logged in -> todos
