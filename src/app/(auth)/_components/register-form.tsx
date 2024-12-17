@@ -39,7 +39,7 @@ export function RegisterForm({ setIsSubmitted }: RegisterFormProps) {
 	const isPending = form.formState.isSubmitting;
 
 	const onSubmit = async (values: Signup) => {
-		const { error } = await authClient.signUp.email(
+		await authClient.signUp.email(
 			{
 				...values,
 			},
@@ -50,11 +50,16 @@ export function RegisterForm({ setIsSubmitted }: RegisterFormProps) {
 					setIsOpen(true);
 					setIsSubmitted(true);
 				},
+				onError: (ctx) => {
+					toast.error(ctx.error.message);
+				},
 			},
 		);
 
-		// TODO: Handle errors
-		if (error) return console.log(error);
+		await authClient.emailOtp.sendVerificationOtp({
+			email: values.email,
+			type: 'email-verification',
+		});
 	};
 
 	const emailValue = form.watch('email');
