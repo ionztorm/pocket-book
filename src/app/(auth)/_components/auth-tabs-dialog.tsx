@@ -1,10 +1,9 @@
 import { DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { AuthTabsDialogProps } from '@/lib/types/auth/auth.types';
 import { LoginForm } from './login-form';
 import { RegisterForm } from './register-form';
 
-export function AuthTabsDialog({ setIsSubmitted }: AuthTabsDialogProps) {
+export function AuthTabsDialog() {
 	return (
 		<>
 			<DialogHeader className='grid gap-2'>
@@ -19,7 +18,7 @@ export function AuthTabsDialog({ setIsSubmitted }: AuthTabsDialogProps) {
 					<TabsTrigger value='login'>Login</TabsTrigger>
 				</TabsList>
 				<TabsContent value='register'>
-					<RegisterForm setIsSubmitted={setIsSubmitted} />
+					<RegisterForm />
 				</TabsContent>
 				<TabsContent value='login'>
 					<LoginForm />

@@ -20,11 +20,10 @@ import { SocialLogins } from '@/app/(auth)/_components/social-logins';
 import { useAuthenticationContext } from '@/app/(auth)/_context/auth-context';
 import { Separator } from '@/components/ui/separator';
 import { authClient } from '@/lib/auth-client';
-import type { RegisterFormProps } from '@/lib/types/auth/auth.types';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.auth.schema';
 import { toast } from 'sonner';
 
-export function RegisterForm({ setIsSubmitted }: RegisterFormProps) {
+export function RegisterForm() {
 	const [isOpen, setIsOpen] = useState(false);
 	const { setEmail } = useAuthenticationContext();
 
@@ -39,27 +38,25 @@ export function RegisterForm({ setIsSubmitted }: RegisterFormProps) {
 	const isPending = form.formState.isSubmitting;
 
 	const onSubmit = async (values: Signup) => {
-		await authClient.signUp.email(
-			{
-				...values,
-			},
-			{
-				onSuccess: () => {
-					toast.success('Welcome! Please check your emails and verify your email address.');
-					setEmail(values.email);
-					setIsOpen(true);
-					setIsSubmitted(true);
+		try {
+			await authClient.signUp.email(
+				{
+					...values,
 				},
-				onError: (ctx) => {
-					toast.error(ctx.error.message);
+				{
+					onSuccess: () => {
+						toast.success('Welcome! Please check your emails and verify your email address.');
+						setEmail(values.email);
+						setIsOpen(true);
+					},
+					onError: (ctx) => {
+						toast.error(ctx.error.message);
+					},
 				},
-			},
-		);
-
-		await authClient.emailOtp.sendVerificationOtp({
-			email: values.email,
-			type: 'email-verification',
-		});
+			);
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	const emailValue = form.watch('email');

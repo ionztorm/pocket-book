@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import {
 	Dialog,
-	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
@@ -53,6 +52,7 @@ export function OTPForm({ isOpen, setIsOpen }: OTPFormProps) {
 						"You have successfully verified your email address and we've logged you in.",
 					);
 					setEmail(null);
+					setIsOpen(false);
 					return router.push('/dashboard/todo');
 				},
 				onError: (ctx) => {
@@ -104,11 +104,9 @@ export function OTPForm({ isOpen, setIsOpen }: OTPFormProps) {
 							)}
 						/>
 						<DialogFooter>
-							<DialogClose asChild>
-								<Button type='submit' disabled={isPending}>
-									{isPending ? <Loading /> : 'Submit'}
-								</Button>
-							</DialogClose>
+							<Button type='submit' disabled={isPending}>
+								{isPending ? <Loading /> : 'Submit'}
+							</Button>
 						</DialogFooter>
 					</form>
 				</Form>
