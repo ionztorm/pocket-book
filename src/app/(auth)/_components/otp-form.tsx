@@ -40,11 +40,11 @@ export function OTPForm({ isOpen, setIsOpen }: OTPFormProps) {
 	const onSubmit = async (values: OTP) => {
 		if (!email) {
 			toast.error("It looks as though we don't have your email address");
-			router.push('/auth/register');
+			router.push('/auth');
 			return;
 		}
 
-		const data = await authClient.emailOtp.verifyEmail(
+		await authClient.emailOtp.verifyEmail(
 			{ email, otp: values.otp },
 			{
 				onSuccess: () => {
@@ -53,14 +53,15 @@ export function OTPForm({ isOpen, setIsOpen }: OTPFormProps) {
 					);
 					setEmail(null);
 					setIsOpen(false);
-					return router.push('/dashboard/todo');
+					// TODO: find a better way to do this.
+					router.push('/dashboard/todo');
+					//return router.refresh();
 				},
 				onError: (ctx) => {
 					toast.error(ctx.error.message);
 				},
 			},
 		);
-		if (data) return data;
 
 		return;
 	};
