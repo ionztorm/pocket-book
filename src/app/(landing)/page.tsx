@@ -13,8 +13,11 @@ export default async function Home() {
 			<span>Pocket Book Landing Page</span>
 			{!session && (
 				<div className='flex gap-2'>
+					<Button asChild size='sm' variant='outline'>
+						<Link href='/login'>Login</Link>
+					</Button>
 					<Button asChild size='sm'>
-						<Link href='/auth'>Let&apos;s go!</Link>
+						<Link href='/sign-up'>Sign-up</Link>
 					</Button>
 				</div>
 			)}
