@@ -16,9 +16,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { OTPForm } from '@/app/(auth)/_components/otp-form';
-import { SocialLogins } from '@/app/(auth)/_components/social-logins';
 import { useAuthenticationContext } from '@/app/(auth)/_context/auth-context';
-import { Separator } from '@/components/ui/separator';
 import { authClient } from '@/lib/auth-client';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.auth.schema';
 import { toast } from 'sonner';
@@ -68,7 +66,7 @@ export function RegisterForm() {
 	return (
 		<>
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-4'>
+				<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-6'>
 					<FormField
 						control={form.control}
 						name='name'
@@ -84,13 +82,14 @@ export function RegisterForm() {
 						control={form.control}
 						name='email'
 						render={({ field }) => (
-							<FormItem>
+							<FormItem className='grid gap-2'>
 								<FormLabel>Email</FormLabel>
 								<FormControl>
 									<Input
 										disabled={isPending}
 										autoComplete='email'
 										placeholder='joe.bloggs@example.com'
+										className='rounded-lg shadow-sm'
 										type='email'
 										{...field}
 									/>
@@ -104,7 +103,7 @@ export function RegisterForm() {
 						control={form.control}
 						name='password'
 						render={({ field }) => (
-							<FormItem>
+							<FormItem className='grid gap-2'>
 								<FormLabel>Password</FormLabel>
 								<FormControl>
 									<Input
@@ -112,6 +111,7 @@ export function RegisterForm() {
 										autoComplete='new-password'
 										placeholder='*******'
 										type='password'
+										className='rounded-lg shadow-sm'
 										{...field}
 									/>
 								</FormControl>
@@ -120,11 +120,9 @@ export function RegisterForm() {
 						)}
 					/>
 
-					<Button type='submit' disabled={isPending}>
+					<Button type='submit' className='rounded-lg shadow-sm' disabled={isPending}>
 						{isPending ? <Loading /> : 'Register'}
 					</Button>
-					<Separator />
-					<SocialLogins />
 				</form>
 			</Form>
 			<OTPForm isOpen={isOpen} setIsOpen={setIsOpen} />

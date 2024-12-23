@@ -18,7 +18,7 @@ export function LoginCard() {
 		<Card className='mx-auto w-full max-w-sm'>
 			<CardHeader className='text-center'>
 				<CardTitle className='text-xl'>Login</CardTitle>
-				<CardDescription>Login with Google or GitHub</CardDescription>
+				<CardDescription>Login with your Google or GitHub account</CardDescription>
 			</CardHeader>
 			<CardContent className='grid gap-4'>
 				<SocialLogins />
@@ -29,7 +29,7 @@ export function LoginCard() {
 			<CardFooter>
 				<p className='w-full text-right text-muted-foreground text-sm'>
 					Are you new here?{' '}
-					<Link className='underline' href='/register'>
+					<Link className='underline' href='/sign-up'>
 						Register
 					</Link>
 				</p>
