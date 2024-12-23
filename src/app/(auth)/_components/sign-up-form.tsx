@@ -21,7 +21,7 @@ import { authClient } from '@/lib/auth-client';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.auth.schema';
 import { toast } from 'sonner';
 
-export function RegisterForm() {
+export function SignUpForm() {
 	const [isOpen, setIsOpen] = useState(false);
 	const { setEmail } = useAuthenticationContext();
 

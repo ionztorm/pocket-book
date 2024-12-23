@@ -1,4 +1,8 @@
 'use client';
+
+import { AuthSpacer } from '@/app/(auth)/_components/auth-spacer';
+import { SignUpForm } from '@/app/(auth)/_components/sign-up-form';
+import { SocialLogins } from '@/app/(auth)/_components/social-logins';
 import {
 	Card,
 	CardContent,
@@ -9,9 +13,6 @@ import {
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import Link from 'next/link';
-import { RegisterForm } from '../_components/register-form';
-import { AuthSpacer } from './auth-spacer';
-import { SocialLogins } from './social-logins';
 
 export default function SignUpCard() {
 	return (
@@ -23,7 +24,7 @@ export default function SignUpCard() {
 			<CardContent className='grid gap-4'>
 				<SocialLogins />
 				<AuthSpacer text='or continue with' />
-				<RegisterForm />
+				<SignUpForm />
 				<Separator />
 			</CardContent>
 			<CardFooter>
