@@ -16,7 +16,7 @@ export function LoginButtonSocial({ provider, icon }: SocialLoginButtonProps) {
 		<Button
 			type='button'
 			variant='outline'
-			className='w-full'
+			className='w-full rounded-lg shadow-sm'
 			onClick={() => socialLogin(provider)}
 		>
 			<Icon />

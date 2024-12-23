@@ -1,16 +1,39 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+'use client';
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import Link from 'next/link';
 import { LoginForm } from '../_components/login-form';
+import { AuthSpacer } from './auth-spacer';
+import { SocialLogins } from './social-logins';
 
 export function LoginCard() {
 	return (
 		<Card className='mx-auto w-full max-w-sm'>
-			<CardHeader>
-				<CardTitle className='text-2xl'>Login</CardTitle>
-				<CardDescription>Login</CardDescription>
+			<CardHeader className='text-center'>
+				<CardTitle className='text-xl'>Login</CardTitle>
+				<CardDescription>Login with Google or GitHub</CardDescription>
 			</CardHeader>
 			<CardContent className='grid gap-4'>
+				<SocialLogins />
+				<AuthSpacer text='or continue with' />
 				<LoginForm />
+				<Separator />
 			</CardContent>
+			<CardFooter>
+				<p className='w-full text-right text-muted-foreground text-sm'>
+					Are you new here?{' '}
+					<Link className='underline' href='/register'>
+						Register
+					</Link>
+				</p>
+			</CardFooter>
 		</Card>
 	);
 }

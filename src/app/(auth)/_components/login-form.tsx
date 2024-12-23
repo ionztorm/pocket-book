@@ -11,16 +11,15 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Loading } from '@/components/ui/loading';
-import { Separator } from '@/components/ui/separator';
 import type { LoginFormErrors } from '@/lib/types/auth/auth.types';
 import type { Login } from '@/lib/types/validation.types';
 import { LoginSchema } from '@/lib/validations/schema/auth.email.auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuthenticationContext } from '../_context/auth-context';
 import { OTPForm } from './otp-form';
-import { SocialLogins } from './social-logins';
 
 export function LoginForm() {
 	const [errors, _setErrors] = useState<LoginFormErrors | null>(null);
@@ -59,12 +58,12 @@ export function LoginForm() {
 	return (
 		<>
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-4'>
+				<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-6'>
 					<FormField
 						control={form.control}
 						name='email'
 						render={({ field }) => (
-							<FormItem>
+							<FormItem className='grid gap-2'>
 								<FormLabel>Email</FormLabel>
 								<FormControl>
 									<Input
@@ -72,6 +71,7 @@ export function LoginForm() {
 										placeholder='joe.bloggs@example.com'
 										autoComplete='email'
 										type='email'
+										className='rounded-lg shadow-sm'
 										{...field}
 									/>
 								</FormControl>
@@ -84,14 +84,20 @@ export function LoginForm() {
 						control={form.control}
 						name='password'
 						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Password</FormLabel>
+							<FormItem className='grid gap-2'>
+								<div className='flex w-full items-center justify-between'>
+									<FormLabel>Password</FormLabel>
+									<Link href='#' className='text-muted-foreground text-sm hover:underline'>
+										Forgot password?
+									</Link>
+								</div>
 								<FormControl>
 									<Input
 										type='password'
 										disabled={form.formState.isSubmitting}
 										placeholder='*******'
 										autoComplete='current-password'
+										className='rounded-lg shadow-sm'
 										{...field}
 									/>
 								</FormControl>
@@ -99,11 +105,9 @@ export function LoginForm() {
 							</FormItem>
 						)}
 					/>
-					<Button type='submit' className='w-full flex-1'>
+					<Button type='submit' className='w-full flex-1 rounded-lg shadow-sm'>
 						{isPending ? <Loading /> : 'Login'}
 					</Button>
-					<Separator />
-					<SocialLogins />
 				</form>
 			</Form>
 			<OTPForm isOpen={isOpen} setIsOpen={setIsOpen} otpFormType='sign-in' />
