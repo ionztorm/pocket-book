@@ -22,18 +22,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
 	children,
-	modal,
 }: Readonly<{
 	children: React.ReactNode;
 	modal: React.ReactNode;
 }>) {
 	return (
 		<html lang='en'>
-			<body className={`${geistSans.variable} ${geistMono.variable} min-h-[100dvh] antialiased`}>
-				<AuthenticationContextProvider>
-					{children}
-					{modal}
-				</AuthenticationContextProvider>
+			<body
+				className={`${geistSans.variable} ${geistMono.variable} min-h-[100dvh] bg-neutral-800 antialiased`}
+			>
+				<AuthenticationContextProvider>{children}</AuthenticationContextProvider>
 				<Toaster />
 			</body>
 		</html>
