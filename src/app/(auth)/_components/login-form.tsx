@@ -85,7 +85,10 @@ export function LoginForm() {
 						<FormItem className='grid gap-2'>
 							<div className='flex w-full items-center justify-between'>
 								<FormLabel>Password</FormLabel>
-								<Link href='#' className='text-muted-foreground text-sm hover:underline'>
+								<Link
+									href='/forgotten-password'
+									className='text-muted-foreground text-sm hover:underline'
+								>
 									Forgot password?
 								</Link>
 							</div>
