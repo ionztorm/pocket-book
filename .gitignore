@@ -1,6 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 backups/
+_backup_components
+_@modal
 
 # dependencies
 /node_modules

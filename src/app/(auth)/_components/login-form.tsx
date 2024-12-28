@@ -52,6 +52,7 @@ export function LoginForm() {
 				},
 				onError: (ctx) => {
 					toast.error(ctx.error.message);
+					console.log(ctx.error.message);
 				},
 			},
 		);
