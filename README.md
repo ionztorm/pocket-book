@@ -36,7 +36,7 @@ Coded using:
   - Username & Password
     - ✅ Registration
     - ✅ Login
-    - Email Verification
+    - ✅ Email Verification
     - Password Reset
   - ✅ Github OAuth
   - ✅ Google OAuth
@@ -85,3 +85,11 @@ change the auth library.
 As such, I chose to perform client-side validation with React-Hook-Form, and within it's onSubmit
 event handler, call a server action which performs additional validation. This helps avoid malicious
 persons bypassing the front-end with something like Postman.
+
+### 4) Better Auth email verification and Next.js route intercepting
+
+I did at create an intercepting route using Next.js parallel and intercepting routes, but I found that the shadcn dialog component did not want to play ball - it would close and redirect back to the landing page if the user cancelled login or registration but would not close automatically on successful login or registration, but success redirect to dashboard still worked in the background. The user would have to manually close the dialog, which resulted in a redirect back to the landing page. Not a great experience.
+
+Additionally, I had problems getting the OTP email verification to work. This turned out to be a problem with the Better Auth OTP plugin. After speaking with the maintainers, we were able to resolve the issue, fix the plugin, and get that merged into the next release.
+
+I may return to re-intrduces the intercepting route at a later date as I have now got this working in my Next.js testging repo, but for now, I'm happy with the current setup.
