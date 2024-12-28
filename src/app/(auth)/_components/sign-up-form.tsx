@@ -15,12 +15,14 @@ import { authClient } from '@/lib/auth-client';
 import type { Signup } from '@/lib/types/validation.types';
 import { SignupSchema } from '@/lib/validations/schema/auth.email.auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 export function SignUpForm() {
 	const { setEmail } = useAuthenticationContext();
+	const router = useRouter();
 
 	const form = useForm<Signup>({
 		resolver: zodResolver(SignupSchema),
@@ -41,6 +43,7 @@ export function SignUpForm() {
 				onSuccess: () => {
 					toast.success('Welcome! Please check your emails and verify your email address.');
 					setEmail(values.email);
+					router.push('/verify-email');
 				},
 				onError: (ctx) => {
 					toast.error(ctx.error.message);

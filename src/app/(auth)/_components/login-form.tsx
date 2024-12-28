@@ -12,17 +12,21 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Loading } from '@/components/ui/loading';
+import { authClient } from '@/lib/auth-client';
 import type { LoginFormErrors } from '@/lib/types/auth/auth.types';
 import type { Login } from '@/lib/types/validation.types';
 import { LoginSchema } from '@/lib/validations/schema/auth.email.auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 export function LoginForm() {
 	const [errors, _setErrors] = useState<LoginFormErrors | null>(null);
 	const [_isOpen, _setIsOpen] = useState(false);
+	const router = useRouter();
 	const { setEmail } = useAuthenticationContext();
 	const form = useForm<Login>({
 		resolver: zodResolver(LoginSchema),
@@ -37,21 +41,20 @@ export function LoginForm() {
 	const onSubmit = async (values: Login) => {
 		console.log(values);
 		setEmail(values.email);
-		// const data = await authClient.emailOtp.sendVerificationOtp(
-		// 	{ email: values.email, type: 'sign-in' },
-		// 	{
-		// 		onSuccess: () => {
-		// 			toast.success("We've sent you a one time password. Please check your emails.");
-		// 			setEmail(values.email);
-		// 			setIsOpen(true);
-		// 		},
-		// 		onError: (ctx) => {
-		// 			toast.error(ctx.error.message);
-		// 			return;
-		// 		},
-		// 	},
-		// );
-		// return data;
+		await authClient.signIn.email(
+			{
+				...values,
+			},
+			{
+				onSuccess: () => {
+					toast.success('Logged in');
+					router.push('/dashboard/todo');
+				},
+				onError: (ctx) => {
+					toast.error(ctx.error.message);
+				},
+			},
+		);
 	};
 
 	return (

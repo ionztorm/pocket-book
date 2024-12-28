@@ -1,12 +1,6 @@
+'use client';
+import { useAuthenticationContext } from '@/app/(auth)/_context/auth-context';
 import { Button } from '@/components/ui/button';
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import {
 	InputOTP,
@@ -14,18 +8,15 @@ import {
 	InputOTPSeparator,
 	InputOTPSlot,
 } from '@/components/ui/input-otp';
-import { Loading } from '@/components/ui/loading';
 import { authClient } from '@/lib/auth-client';
-import type { OTPFormProps } from '@/lib/types/auth/auth.types';
 import type { OTP } from '@/lib/types/validation.types';
 import { OTPSchema } from '@/lib/validations/schema/auth.email.auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { useAuthenticationContext } from '../_context/auth-context';
 
-export function OTPForm({ isOpen, setIsOpen }: OTPFormProps) {
+export function OTPForm() {
 	const { email, setEmail } = useAuthenticationContext();
 	const router = useRouter();
 	const form = useForm<OTP>({
@@ -52,10 +43,8 @@ export function OTPForm({ isOpen, setIsOpen }: OTPFormProps) {
 						"You have successfully verified your email address and we've logged you in.",
 					);
 					setEmail(null);
-					setIsOpen(false);
 					// TODO: find a better way to do this.
 					router.push('/dashboard/todo');
-					//return router.refresh();
 				},
 				onError: (ctx) => {
 					toast.error(ctx.error.message);
@@ -67,51 +56,34 @@ export function OTPForm({ isOpen, setIsOpen }: OTPFormProps) {
 	};
 
 	return (
-		<Dialog open={isOpen} onOpenChange={setIsOpen}>
-			<DialogContent className='grid gap-4'>
-				<DialogHeader className='items-center gap-2'>
-					<DialogTitle>Enter your One Time Password</DialogTitle>
-					<DialogDescription asChild>
-						<p>
-							We've sent a temporary code to {email}. It's only valid for 5 minutes. Go get it and
-							paste it here.
-						</p>
-					</DialogDescription>
-				</DialogHeader>
-				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-4'>
-						<FormField
-							control={form.control}
-							name='otp'
-							render={({ field }) => (
-								<FormItem className='flex flex-col items-center gap-2'>
-									<FormLabel className='sr-only'>Enter your one time password</FormLabel>
-									<FormControl>
-										<InputOTP maxLength={6} {...field} disabled={isPending}>
-											<InputOTPGroup>
-												<InputOTPSlot index={0} />
-												<InputOTPSlot index={1} />
-												<InputOTPSlot index={2} />
-											</InputOTPGroup>
-											<InputOTPSeparator />
-											<InputOTPGroup>
-												<InputOTPSlot index={3} />
-												<InputOTPSlot index={4} />
-												<InputOTPSlot index={5} />
-											</InputOTPGroup>
-										</InputOTP>
-									</FormControl>
-								</FormItem>
-							)}
-						/>
-						<DialogFooter>
-							<Button type='submit' disabled={isPending}>
-								{isPending ? <Loading /> : 'Submit'}
-							</Button>
-						</DialogFooter>
-					</form>
-				</Form>
-			</DialogContent>
-		</Dialog>
+		<Form {...form}>
+			<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-4'>
+				<FormField
+					control={form.control}
+					name='otp'
+					render={({ field }) => (
+						<FormItem className='flex flex-col items-center gap-2'>
+							<FormLabel className='sr-only'>Enter your one time password</FormLabel>
+							<FormControl>
+								<InputOTP maxLength={6} {...field} disabled={isPending}>
+									<InputOTPGroup>
+										<InputOTPSlot index={0} />
+										<InputOTPSlot index={1} />
+										<InputOTPSlot index={2} />
+									</InputOTPGroup>
+									<InputOTPSeparator />
+									<InputOTPGroup>
+										<InputOTPSlot index={3} />
+										<InputOTPSlot index={4} />
+										<InputOTPSlot index={5} />
+									</InputOTPGroup>
+								</InputOTP>
+							</FormControl>
+						</FormItem>
+					)}
+				/>
+				<Button type='submit'>Submit</Button>
+			</form>
+		</Form>
 	);
 }

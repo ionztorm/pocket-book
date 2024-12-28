@@ -1,3 +1,4 @@
+import { OTPForm } from '@/app/(auth)/_components/otp-form';
 import {
 	Card,
 	CardContent,
@@ -6,7 +7,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card';
-import { OTPForm } from './otpform';
 
 export function OtpCard() {
 	return (
