@@ -1,7 +1,7 @@
 import type { ChildrenProps } from '@/lib/types/global.types';
 import type { Dispatch, SetStateAction } from 'react';
 import type { IconType } from 'react-icons/lib';
-import type { Email, Login, OTP, Signup } from '../validation.types';
+import type { Email, Login, Signup } from '../validation.types';
 
 export type AuthLoginProviders = Readonly<'google' | 'github'>;
 export type AuthPageComponentProps = Readonly<{
@@ -15,12 +15,6 @@ export type SocialLoginButtonProps = Readonly<{
 
 export type OtpEmailTypes = 'sign-in' | 'email-verification' | 'forget-password';
 
-export type OTPFormProps = Readonly<{
-	isOpen: boolean;
-	setIsOpen: (isOpen: boolean) => void;
-	otpFormType: OtpEmailTypes;
-}>;
-
 export type TAuthenticationContext = {
 	email: Email['email'] | null;
 	setEmail: Dispatch<SetStateAction<Email['email'] | null>>;
@@ -29,17 +23,6 @@ export type TAuthenticationContext = {
 export type TAuthenticationContextProviderProps = {
 	children: React.ReactNode;
 };
-
-export type AuthContextReducerState = {
-	name: string | null;
-	email: Email['email'] | null;
-	otp: OTP['otp'] | null;
-};
-
-export type AuthContextReducerAction =
-	| { type: 'email'; email: string }
-	| { type: 'name'; name: string }
-	| { type: 'otp'; otp: string };
 
 export type AuthFormStates = 'register' | 'login' | 'otp';
 
@@ -56,3 +39,25 @@ export type FormErrors<T extends string> = Readonly<{
 
 export type SignupFormErrors = Readonly<FormErrors<SignupFields>>;
 export type LoginFormErrors = Readonly<FormErrors<LoginFields>>;
+
+// Component Props
+
+export type AuthCardProps = Readonly<{
+	title: string;
+	description: string;
+}> &
+	ChildrenProps;
+
+export type OTPFormProps = Readonly<{
+	isOpen: boolean;
+	setIsOpen: (isOpen: boolean) => void;
+	// otpFormType: OtpEmailTypes;
+}>;
+
+export type RegisterFormProps = Readonly<{
+	setIsSubmitted: Dispatch<SetStateAction<boolean>>;
+}>;
+
+export type AuthTabsDialogProps = Readonly<{
+	setIsSubmitted: Dispatch<SetStateAction<boolean>>;
+}>;

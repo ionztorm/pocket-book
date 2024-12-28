@@ -11,19 +11,17 @@ export default async function middlware(request: NextRequest) {
 		},
 	});
 
-	// accessing /dashboard/*  or /auth while not logged in -> auth
-	if (
-		!session &&
-		(request.nextUrl.pathname.startsWith('/dashboard') ||
-			request.nextUrl.pathname.endsWith('/auth'))
-	) {
-		return NextResponse.redirect(new URL('/auth/login', request.url));
+	// accessing /dashboard/* while not logged in -> auth
+	if (!session && request.nextUrl.pathname.startsWith('/dashboard')) {
+		return NextResponse.redirect(new URL('/login', request.url));
 	}
 
 	// accessing /auth or /dashboard while logged in -> todos
 	if (
 		session &&
-		(request.nextUrl.pathname.startsWith('/auth') ||
+		(request.nextUrl.pathname.startsWith('/sign-up') ||
+			request.nextUrl.pathname.startsWith('/sign-up') ||
+			request.nextUrl.pathname.startsWith('/verify-email') ||
 			request.nextUrl.pathname.endsWith('/dashboard'))
 	) {
 		return NextResponse.redirect(new URL('/dashboard/todo', request.url));
@@ -33,5 +31,5 @@ export default async function middlware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/dashboard', '/dashboard/:path*', '/auth'],
+	matcher: ['/dashboard', '/dashboard/:path*', '/sign-up', '/verify-email', '/login'],
 };

@@ -2,6 +2,7 @@ import { Toaster } from '@/components/ui/sonner';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
+import { AuthenticationContextProvider } from './(auth)/_context/auth-context';
 
 const geistSans = localFont({
 	src: './fonts/GeistVF.woff',
@@ -23,11 +24,12 @@ export default function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
+	modal: React.ReactNode;
 }>) {
 	return (
 		<html lang='en'>
 			<body className={`${geistSans.variable} ${geistMono.variable} min-h-[100dvh] antialiased`}>
-				{children}
+				<AuthenticationContextProvider>{children}</AuthenticationContextProvider>
 				<Toaster />
 			</body>
 		</html>

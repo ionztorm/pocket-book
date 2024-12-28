@@ -9,12 +9,15 @@ export default async function Home() {
 		headers: await headers(),
 	});
 	return (
-		<div className='flex justify-between p-2'>
-			<span>Pocket Book Landing Page</span>
+		<div className='flex items-center justify-between p-2 text-neutral-50'>
+			<span className='font-black text-2xl'>PB</span>
 			{!session && (
 				<div className='flex gap-2'>
+					<Button asChild size='sm' variant='ghost'>
+						<Link href='/login'>Login</Link>
+					</Button>
 					<Button asChild size='sm'>
-						<Link href='/auth'>Let&apos;s go!</Link>
+						<Link href='/sign-up'>Sign-up</Link>
 					</Button>
 				</div>
 			)}

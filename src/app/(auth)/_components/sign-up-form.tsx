@@ -1,5 +1,4 @@
 'use client';
-
 import { useAuthenticationContext } from '@/app/(auth)/_context/auth-context';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,42 +12,38 @@ import {
 import { Input } from '@/components/ui/input';
 import { Loading } from '@/components/ui/loading';
 import { authClient } from '@/lib/auth-client';
-import type { LoginFormErrors } from '@/lib/types/auth/auth.types';
-import type { Login } from '@/lib/types/validation.types';
-import { LoginSchema } from '@/lib/validations/schema/auth.email.auth.schema';
+import type { Signup } from '@/lib/types/validation.types';
+import { SignupSchema } from '@/lib/validations/schema/auth.email.auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-export function LoginForm() {
-	const [errors, _setErrors] = useState<LoginFormErrors | null>(null);
-	const [_isOpen, _setIsOpen] = useState(false);
-	const router = useRouter();
+export function SignUpForm() {
 	const { setEmail } = useAuthenticationContext();
-	const form = useForm<Login>({
-		resolver: zodResolver(LoginSchema),
+	const router = useRouter();
+
+	const form = useForm<Signup>({
+		resolver: zodResolver(SignupSchema),
 		defaultValues: {
+			name: '',
 			email: '',
 			password: '',
 		},
 	});
-
 	const isPending = form.formState.isSubmitting;
 
-	const onSubmit = async (values: Login) => {
-		console.log(values);
-		setEmail(values.email);
-		await authClient.signIn.email(
+	const onSubmit = async (values: Signup) => {
+		await authClient.signUp.email(
 			{
 				...values,
 			},
 			{
 				onSuccess: () => {
-					toast.success('Logged in');
-					router.push('/dashboard/todo');
+					toast.success('Welcome! Please check your emails and verify your email address.');
+					setEmail(values.email);
+					router.push('/verify-email');
 				},
 				onError: (ctx) => {
 					toast.error(ctx.error.message);
@@ -57,9 +52,26 @@ export function LoginForm() {
 		);
 	};
 
+	const emailValue = form.watch('email');
+
+	useEffect(() => {
+		form.setValue('name', emailValue, { shouldValidate: true });
+	}, [form.setValue, emailValue]);
+
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className='grid gap-6'>
+				<FormField
+					control={form.control}
+					name='name'
+					render={({ field }) => (
+						<FormItem className='hidden'>
+							<FormControl>
+								<Input type='hidden' {...field} />
+							</FormControl>
+						</FormItem>
+					)}
+				/>
 				<FormField
 					control={form.control}
 					name='email'
@@ -68,15 +80,15 @@ export function LoginForm() {
 							<FormLabel>Email</FormLabel>
 							<FormControl>
 								<Input
-									disabled={form.formState.isSubmitting}
-									placeholder='joe.bloggs@example.com'
+									disabled={isPending}
 									autoComplete='email'
-									type='email'
+									placeholder='joe.bloggs@example.com'
 									className='rounded-lg shadow-sm'
+									type='email'
 									{...field}
 								/>
 							</FormControl>
-							<FormMessage>{errors?.email ? errors.email : ''}</FormMessage>
+							<FormMessage />
 						</FormItem>
 					)}
 				/>
@@ -86,21 +98,13 @@ export function LoginForm() {
 					name='password'
 					render={({ field }) => (
 						<FormItem className='grid gap-2'>
-							<div className='flex w-full items-center justify-between'>
-								<FormLabel>Password</FormLabel>
-								<Link
-									href='/forgotten-password'
-									className='text-muted-foreground text-sm hover:underline'
-								>
-									Forgot password?
-								</Link>
-							</div>
+							<FormLabel>Password</FormLabel>
 							<FormControl>
 								<Input
-									type='password'
-									disabled={form.formState.isSubmitting}
+									disabled={isPending}
+									autoComplete='new-password'
 									placeholder='*******'
-									autoComplete='current-password'
+									type='password'
 									className='rounded-lg shadow-sm'
 									{...field}
 								/>
@@ -109,8 +113,9 @@ export function LoginForm() {
 						</FormItem>
 					)}
 				/>
-				<Button type='submit' className='w-full flex-1 rounded-lg shadow-sm'>
-					{isPending ? <Loading /> : 'Login'}
+
+				<Button type='submit' className='rounded-lg shadow-sm' disabled={isPending}>
+					{isPending ? <Loading /> : 'Register'}
 				</Button>
 			</form>
 		</Form>
